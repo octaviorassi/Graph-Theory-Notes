@@ -1,0 +1,92 @@
+\documentclass[oneside]{book}
+
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{thmtools}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{framed}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{environ}
+\usepackage{tcolorbox}
+\usepackage{verbatim}
+\tcbuselibrary{theorems,skins,breakable}
+
+\setstretch{1.2}
+\geometry{
+    textheight=9in,
+    textwidth=5.5in,
+    top=1in,
+    headheight=12pt,
+    headsep=25pt,
+    footskip=30pt
+}
+
+% Variables
+\def\notetitle{COMPLEMENTOS DE MATEMATICA I
+
+(BORRADOR)}
+
+\def\noteauthor{
+    \textbf{Octavio Rassi}
+}
+\def\notedate{9 de Septiembre 2023}
+
+% The theorem system and user-defined commands
+\input{build/theorems.tex}
+\input{build/commands.tex}
+
+% ------------------------------------------------------------------------------
+
+\begin{document}
+\selectlanguage{spanish}
+\setlocalecaption{spanish}{chapter}{Capítulo}
+\setlocalecaption{spanish}{contents}{Contenidos}
+% chktex-file 10
+% chktex-file 9
+% chktex-file 1
+% chktex-file 36
+
+
+
+\title{\textbf{
+    \LARGE{\notetitle} \vspace*{10\baselineskip}}
+    }
+%\author{\noteauthor}
+\date{\notedate}
+
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+% ------------------------------------------------------------------------------
+
+% \chapter{Examples}
+
+% \section{Theorem System}
+
+% Theorem System
+% The following boxes are provided:
+%   Definition:     \defn 
+%   Theorem:        \thm 
+%   Lemma:          \lem
+%   Corollary:      \cor
+%   Proposition:    \prop   
+%   Claim:          \clm
+%   Fact:           \fact
+%   Proof:          \pf
+%   Example:        \ex
+%   Remark:         \rmk (sentence), \rmkb (block)
+% Suffix
+%   r:              Allow Theorem/Definition to be referenced, e.g. thmr
+%   p:              Add a short proof block for Lemma, Corollary, Proposition or Claim, e.g. lemp
+%                   For theorems, use \pf for proof blocks
+
+% --------------------------------------------------------------------------------
+
