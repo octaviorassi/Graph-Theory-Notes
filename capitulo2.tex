@@ -1,0 +1,440 @@
+\documentclass[APUNTE_COMPLEMENTOS.tex]{subfiles}
+\begin{document}
+% ------------------------------------------------------------------------------
+
+% \chapter{Examples}
+
+% \section{Theorem System}
+
+% Theorem System
+% The following boxes are provided:
+%   Definition:     \defn 
+%   Theorem:        \thm 
+%   Lemma:          \lem
+%   Corollary:      \cor
+%   Proposition:    \prop   
+%   Claim:          \clm
+%   Fact:           \fact
+%   Proof:          \pf
+%   Example:        \ex
+%   Remark:         \rmk (sentence), \rmkb (block)
+% Suffix
+%   r:              Allow Theorem/Definition to be referenced, e.g. thmr
+%   p:              Add a short proof block for Lemma, Corollary, Proposition or Claim, e.g. lemp
+%                   For theorems, use \pf for proof blocks
+
+% --------------------------------------------------------------------------------
+
+\chapter{Caminos, ciclos y recorridos}
+\section{Definiciones y primeros resultados}
+\defn{Camino}{
+    Dado un grafo $G$, un camino en $G$ es una lista $v_0, e_0, v_1, \dots, e_k, v_k$ de vertices y aristas tales que $e_i = v_{i-1}, \forall{i \in [k]}$.
+    Llamaremos longitud de un camino a la cantidad de aristas que posee.
+
+    Si el grafo es simple, es suficiente con listar los vertices solamente.
+}
+
+
+
+\defn{Camino simple}{Un camino simple es un camino que no repite vertices}
+
+\defn{Recorrido}{Un recorrido es un camino que no repite aristas}
+
+\defn{$u,v-$camino/recorrido/camino simple}{Un $u,v-camino$ es un camino cuyos extremos son $u$ y $v$. Analogamente se define para recorridos y caminos simples}
+\defn{Camino/Recorrido cerrado} {Un camino/recorrido cerrado es un $u,u-$camino/recorrido.}
+
+\defn{Circuitos y ciclos}{Un recorrido cerrado es un circuito.
+Un camino simple cerrado es un ciclo.}
+
+\thmr{Existencia de caminos simples}{}{Todo $u,v-$camino contiene un $u,v-$camino simple.}
+\pf{
+Procederemos por induccion sobre la longitud del camino $n$.
+
+$\centerdot$ Si $n = 0$, estamos en el caso de un unico vertice, luego este es un camino simple en si mismo.
+
+$\centerdot$ Sea $n \geq 1$ y supongamos inductivamente que la propiedad vale para todo camino de longitud menor a $n$. Entonces,
+
+$\centerdot$ Si el camino no repite vertices, no hay nada para hacer, pues ya es simple.
+
+$\centerdot$ Supongamos que si repite (al menos) un vertice que llamaremos $w$. Entonces, si eliminamos del camino a los vertices y aristas entre dos apariciones de $w$, manteniendo una aparicion del vertice, tendremos un $u,v-$camino de longitud menor o igual a $n$. Entonces, por $HI$ este camino contiene un $u,v-$camino simple.
+
+Luego, en particular ese es un $u,v-$camino simple del camino original, como queriamos demostrar.
+}
+
+\rmkb{
+\(\centerdot\) Un circuito contiene un ciclo no trivial. Mas aun, dado un circuito y un vertice $v$, existe al menos un ciclo que esta contenido en el circuito al cual $v$ pertenece.
+
+\(\centerdot\) Un grafo $G$ es conexo si \(\forall{u, v \in V(G)}\) existe un $u,v-$camino.
+
+$\centerdot$ Una componente conexa de $G$ es un subgrafo conexo maximal.
+
+$\centerdot$ El agregado de una arista reduce en a lo sumo una unidad el numero de componentes conexas del grafo.
+
+$\centerdot$ El borrado de una arista aumenta en a lo sumo una unidad el numero de componentes conexas.
+
+$\centerdot$ El borrado de un vertice puede aumentar el numero de componentes conexas en hasta $\lvert V(G) - 2 \rvert $ y disminuir en a lo sumo $1$.
+}
+
+\defn{Vertice y arista de corte}{
+    Dado un grafo $G$, una arista de corte de $G$ es una arista cuyo borrado aumenta el numero de componentes conexas de $G$.
+
+    Un vertice de corte es un vertice tal que $G - v$ posee mas componentes conexas que $G$.
+}
+
+\thmr{Caracterizacion de aristas de corte}{}{Una arista es de corte $\Longleftrightarrow$  no pertenece a ningun ciclo}
+
+\pf{
+
+$\Longleftarrow )$ Supongamos que $e\in E(G)$ no es de corte. Sea $e = uv$, $u \neq v$ y $H$ la componente conexa de $G$ a la cual pertenece $e$. Ahora, como $e$ no es de corte de $G$, tampoco puede ser de corte de $H$, luego $H/e$ debe ser conexo.
+
+Como $u,v \in V(H/e)$, existe un $u,v-$camino simple en $H/e$. Este camino junto con $e$ forman un ciclo en $H$ y por lo tanto en $G$, absurdo.
+
+
+$\Longrightarrow )$ Supongamos que $e =uv \in E(G)$ pertenece a un ciclo $C$. Sea $H$ la componente conexa tal que $e \in E(H)$. Veamos que $H/e$ es conexo.
+
+Sean $x, y \in V(H/e)$. Como $H$ es conexo, existe un $x,y-$camino, que llamaremos $P$, en H. Entonces,
+
+$\centerdot$ Si $e \notin {P} \Longrightarrow P$ es un $x,t-camino$ en $H/e$.
+
+$\centerdot$ Si $e \in {P} \Longrightarrow$ consideramos el camino $P'$ que se obtiene de reemplazar la arista $e$ en $P$ por $C/e$. Como $C/e$ es un $u,v-$camino, $P'$ es un $x,y-$camino y $e \notin P'$, entonces $P'$ es un $x,y-$camino en $H/e$.
+
+$\therefore$ $H/e$ es conexo $\Longrightarrow G/e$ tiene la misma cantidad de componentes conexas que $G \Longrightarrow$ no es de corte de $G$.
+
+}
+
+\rmkb{
+    $\centerdot$ Si $e=uv$ es de corte, entonces $v$ es de corte?
+    
+    $\centerdot$ $\overline{G}-v \simeq$? $ \overline{G-v}$\
+
+    $\centerdot$ $v\in{V(G)}$ es de corte $\Longrightarrow \overline(G) - v$ es conexo.
+
+    $\centerdot$ Si $G$ es autocomplementario, entonces $G$ tiene un vertice de corte $\Longleftrightarrow G$ tiene un vertice de grado 1.
+}
+\section{Circuitos de Euler}
+
+\defn{Grafos y circuitos eulerianos}{
+    Un grafo es euleriano si posee un circuito que contiene a todas las aristas.
+
+    Un circuito es euleriano es un circuito que recorre todas las aristas.
+}
+
+\defn{Camino maximal}{Un camino simple es maximal si no esta contenido en otro de mayor longitud.}
+
+\lemp{}{Sea $G$ un grafo tal que $\delta (G) \geq 2$. Entonces, $G$ contiene un ciclo.}
+{
+    Comencemos observando que, si $G$ tiene bucles o aristas repetidas, la tesis vale trivialmente. Por lo tanto, supongamos que $G$ no tiene bucles ni aristas repetidas, y llamemos $P$ a un camino simple maximal en G. Entonces, 
+    
+    $\centerdot$ Si $P$ es cerrado, $\Longrightarrow P$ es un ciclo.
+    
+    $\centerdot$ Si $P$ no es cerrado, consideremos $u$ un extremo de $P$ cualquiera. Como $d(u) \geq 2$, existira un $v$ tal que $uv \in E(G)$ y $uv \notin P$ (pues de otra manera no seria $u$ extremo).
+    Luego $v$ pertenece a P ya que de lo contrario podriamos obtener un camino simple considerando la arista $uv$ y $P$, y este nuevo camino tendria mayor longitud que $P$, lo que contradice nuestra hipotesis de $P$ maximal.
+    
+    $\therefore$ $v \in P$, luego $uv$ y la porcion del camino $P$ que unen $v$ con $u$ forman un ciclo.
+}
+
+
+
+\thmr{Teorema de Euler}{}{
+Un grafo $G$ es euleriano $\Longleftrightarrow$ $G$ tiene a lo sumo una componente conexa no trivial y todos sus vertices tienen un grado par
+}
+
+\pf{
+$\Longrightarrow)$ Supongamos que $G$ tiene un circuito euleriano $C$.
+
+$\centerdot$ Si $E(G) = \emptyset$ la tesis es valida.
+
+$\centerdot$ Supongamos por el contrario que $E(G) \neq \emptyset$. Cada paso de $C$ por un vertice usa 2 aristas incidentes en el, donde la primera arista y la ultima suman 2 al vertice inicial. Luego, todo vertice tiene grado par. Ademas, como 2 aristas cualesquiera de $C$ estan en el circuito euleriano, en particular estan en la misma componente conexa.
+
+$\Longleftarrow)$ Sabemos que $d_G (v)$ es par $\forall{v \in V(G)}$ y tiene a lo sumo una componente conexa no trivial. Procederemos por induccion sobre $m = \lvert E(G) \rvert$.
+
+$\centerdot$ $m=0$, entonces cada componente conexa es trivial luego se verifica la propiedad.
+
+$\centerdot$ Supongamos $m \geq 1$ y que el resultado es valido para todo grafo $G$ con menos de $m$ aristas. Como tenemos al menos una arista, hay al menos una componente conexa no trivial $H$.
+
+Observemos que $d_H (v) = d_G(v), \forall{v\in V(H)} \Longrightarrow H$ es par.
+
+No pueden existir vertices de grado 0 ya que es conexo, entonces $\delta (H) \geq 2 \Longrightarrow H$ tiene un ciclo $C$ (lema). Sea $G' = G/E(C)$, como $C$ tiene 0 o 2 aristas incidentes en cada vertice de G, entonces cada componente conexa de $G'$ es par. Ademas, cada componente conexa tiene menos de $m$ aristas. Luego, por HI cada componente conexa de $G'$ tiene un circuito euleriano.
+
+Ahora, para combinar estos circuitos eulerianos, comenzamos en un vertice cualquiera $v$ de $C$, recorremos $C$ y cada vez que llegamos a un vertice de alguna componente conexa, realizamos el circuito euleriano de esa componente conexa (si es que no la recorrimos antes), hasta volver al vertice de $C$ para continuar. Este recorrido culmina en $v$ y es, en efecto, un circuito euleriano.
+
+}
+
+\cor{
+    Todo grafo par se puede descomponer en ciclos.
+}
+
+\defn{Distancia en un grafo}{
+    Sea $G$ un grafo simple. Dados $u,v \in V(G)$, la distancia en $G$ entre $u$ y $v$ es la longitud del camino mas corto que los une, si existe.
+    En caso contrario, decimos que la distancia es $\infty$.
+
+    Lo notamos $dist_G (u, v) = l \in \mathbb{N}$. 
+}
+
+\rmkb{
+    La maxima ${dist_G (u, v)} \forall {v, u \in V(G)}$ se denomina diametro.
+
+    Los caminos mas cortos son simples e inducidos, esto es:
+    
+    Si $dist_G (u, v) = k \in \mathbb{N}$, entonces existe $P_{k+1}$ inducido en $G$.
+}
+    
+\fact{        
+    Si $diam(G) = k \in \mathbb{N}$ entonces existe un $P_{k+1}$ inducido. Mas aun, existe $P_m$ inducido $\forall{m \leq k + 1}$.
+}
+
+\cor{
+    Sea $G$ un grafo simple tal que $G$ es $P_k - free$. Entonces, $diam(G) < k - 1$.
+}
+
+
+\prop{
+    $dist_G (u, v) = 1 \Longleftrightarrow uv \in E(G)$
+}
+
+\rmkb{
+Sea $G$ simple y conexo, y sea $v\in{V (G)}$, con $diam(G) \in{\mathbb{N}}$. Consideremos el conjunto $D_k (G, v) = \{ u\in{V (G)}: dist_G (u, v) = k\}$, donde $k\in{\{0, \dots, diam (G)\}}$.
+
+Observemos que fijando un vertice $v$ y tomando todos los $k$ posibles entre $0$ y $diam (G)$ lo que obtenemos es una particion de $V (G)$.
+}
+
+\rmkb{
+    Tomar una particion en $D_1, D_2, D_3, D_4$ puede ser util para probar la equivalencia entre bipartito y no tener ciclos impares.
+}
+
+\propp{
+    Un camino cerrado impar contiene un ciclo impar.
+}{
+    Por induccion sobre la longitud del camino $l = 2k + 1, k \in \mathbb{N}$.
+    
+    \textbf{Caso base.} Sea $k = 1$. Entonces el unico camino cerrado posible es exactamente $C_3$, luego la propiedad vale trivialmente.
+
+    \textbf{Hipotesis inductiva.} Supongamos que para todo $k \leq n - 1$ vale la propiedad.
+
+    \textbf{Paso inductivo.} Consideremos el camino cerrado $P$ de longitud $2n + 1 = l$. Ahora, tenemos que este camino puede ser simple o no. Si el camino es simple, entonces por definicion es un ciclo impar, luego vale la propiedad.
+
+    Consideremos entonces que el camino no es simple, es decir, tiene algun vertice repetido. Expresemos al camino como
+    \[P = v_0 v_1 v_2 \dots v_{2n}\]
+    Definamos entonces un indice $j \in \mathbb{N}$ tal que
+    \[j = \min\{i \in \mathbb{N}: \exists k \in \mathbb{N}: v_i = v_k, i \neq k\}\]
+
+    Es decir, $j$ es el primer indice de un vertice repetido en $P$. Como $j$ es repetido, podemos expresar a $P$ de la siguiente manera:
+    \[P = v_0 v_1 v_2 v_3 \dots v_j v_{j+1} \dots v_k v_{k+1} \dots v_0\]
+
+    Podemos separar entonces a $P$ en dos caminos cerrados $P_1$ y $P_2$ tales que
+    \[P_1 = v_0 v_1 v_2 \dots v_j v_{k+1} \dots v_0\]
+    \[P_2 = v_j v_{j+1} \dots v_{k-1} v_k\]
+    \[P = P_1 + P_2 \; (P_1 \cup P_2)\]
+
+    Observemos que, como la longitud de $P$ es impar, y es igual a la suma de las longitudes de $P_1$ y $P_2$, necesariamente alguno de los dos caminos debe tener longitud impar. Entonces, considerando ese camino, cuya longitud debera ser menor a $2k + 1$, aplicando H.I. tenemos que debe contener un ciclo impar. En particular, entonces, $P$ contiene un ciclo impar.
+
+    $\therefore$ $P$ contiene un ciclo impar, luego por teorema de induccion vale la proposicion.
+
+
+    
+}
+
+\rmkb{
+    Este es un resultado mas fuerte que el anterior. Es decir, probar esta proposicion facilita la prueba de la caracterizacion de los grafos bipartitos anterior.
+}
+
+\section{Grafos dirigidos (digrafos)}
+
+\ex{
+    Si $x, y \in \mathbb{N}, x \neq y$, $x$ es un divisor maximal de $y$ si $\frac{y}{x}$ es un numero primo.
+
+    Para $S \subseteq \mathbb{N}$, el conjunto $R = \{ (x, y) \in S^2: x$ es un divisor maximal de y $\}$.
+
+    Para graficarlo, colocamos un vertice por cada numero de $S$ y una flecha de $x$ a $y$ si $x$ es divisior maximal de $y$.
+}
+
+\defn{Grafo dirigido (digrafo)}{
+    Un grafo dirigido o digrafo es una terna que consiste en un conjunto de vertices $V(G)$, un conjunto de aristas $E(G)$ y una funcion que asigna a cada elemento de $E(G)$ un par ordenado de vertices.
+}
+
+\rmkb{
+    Una notacion para un digrafo es $\vec{G}$ o $D$.
+
+    A las aristas de un digrafo se las suele llamar tambien arcos.
+}
+
+\defn{Bucles en digrafos}{
+    Un bucle en un digrafo es una arista con los mismos extremos. Aristas multiples (o repetidas) son aristas que poseen el mismo par ordenado.
+}
+
+\ex{
+    Sea $f: A \longrightarrow B$ una funcion. El digrafo funcional de $f$ es el digrafo con conjunto de vertices $A$ y arcos $\{(x, f(x)): x \in A\}$.
+}
+
+\defn{Grafo subyacente}{
+    El grafo subyacente de un digrafo D es el grafo G obtenido considerando los arcos como pares no ordenados.
+}
+
+\rmkb{
+    Las definiciones sobre digrafos de subdigrafo o isomorfismo son analogas a las de grafos.
+}
+
+\defn{Matriz de adyacencia de un digrafo}{
+    Dado $D$ un digrafo con $n$ vertices, la matriz de adyacencia de $D$ es la matriz $A(D) \in \mathbb{F}^{n \times n}$ definida por $A(D) = \{a_{ij}\}$ donde $a_{ij}$ es la cantidad de arcos de la forma $(i, j)$.   
+}
+
+\defn{Matriz de incidencia de un digrafo}{
+    Dado $D$ un digrafo sin bucles, definimos a la matriz de incidencia de $D$, y la notamos $M(D)$ a la matriz tal que $M(D) = \{m_{ve}\}$ donde:
+
+    \[ m_{ve} =
+       \begin{cases} 
+        1 & e = (v, u) \in E(D) \\
+        -1 & e = (u, v) \in E(D) \\
+        0 & e = (x, y) \in E(D) \land x \neq v \neq y \\
+       \end{cases}
+    \]
+}
+
+\defn{Grado de salida y de entrada de un vertice}{
+    Sea $D$ un digrafo y $v \in V(G)$. Entonces,
+
+    \begin{itemize}
+    \item El grado de salida de $v$ en $G$ es la cantidad de arcos de la forma $(v, u)$ para algun $u \in V(G)$.
+
+    \item El grado de entrada de $v$ en $G$ es la cantidad de arcos de la forma $(u, v)$ para algun $u \in V(G)$.
+    \end{itemize}
+    Los notaremos $d_{D}^+ (v)$ y $d_{D}^- (v)$ respectivamente.
+}
+
+\prop{
+    \begin{displaymath}
+        \sum_{v \in V(D)}^{} d_{D}^+ (v) = \sum_{v \in V(D)}^{} d_{D}^- (v)
+    \end{displaymath}
+}
+
+\rmkb{
+    Se definen de manera analoga camino, recorrido, camino simple, circuito, ciclo, respetando el orden de los arcos en la lista.
+} 
+
+\defn{Circuito euleriano dirigido}{
+    Un circuito euleriano dirigido de un digrafo es un circuito que recorre cada arco exactamente una vez.
+}
+
+\lemp{Lema previo al teorema de Euler para digrafos}{
+Sea $D$ un digrafo tal que $\forall{v \in V(D)}$ $d_{D}^+ (v) \geq 1$. Entonces, $D$ contiene un ciclo.
+}{
+Sea $\vec{P}$ un camino simple dirigido maximal en $D$ y $u \in V(D)$ el ultimo vertice de $\vec{P}$. Si $\vec{P}$ es cerrado, vale la tesis.
+
+En caso contrario, con $d_{D}^+ (u) \geq 1$ existe un arco de la forma $(u, v)$ para algun $v \in V(D)$. Tenemos entonces dos posibilidades para este $v$.
+
+Si $v \notin V(\vec{P})$, entonces $\vec{P}$ no seria maximal, absurdo. Luego, $v \in V(\vec{P})$, entonces $(u, v)$ junto con la parte del camino que une $v$ con $u$ forman un ciclo.
+}
+
+\thmr{Teorema de Euler}{}{
+    Sea $D$ un digrafo. Entonces,
+
+    \begin{center}
+    $D$ es euleriano $\Longleftrightarrow d_{D}^+ (v) = d_{D}^- (v)$ $\forall{v \in V(D)}$ y el grafo subyacente tiene a lo sumo una componente conexa no trivial.
+    \end{center}
+}
+
+\pf{
+    Sigue del lema anterior, analoga al teorema de Euler para grafos.
+}
+
+\section{Ciclos de Hamilton}
+
+\defn{Ciclo Hamiltoniano}{
+    Dado un grafo $G$, un ciclo en $G$ es hamiltoniano (o de Hamilton) si contiene todos los vertices.
+
+    En tal caso, diremos que $G$ es un $grafo \; hamiltoniano$.
+}
+\rmkb{
+    No existe una caracterizacion sencilla de los grafos hamiltonianos como si existe de los grafos eulerianos.
+
+    Consideraremos grafos simples, ya que los bucles y aristas repetidas son irrelevantes para la existencia de ciclos hamiltonianos.
+}
+
+\fact{
+    Hay condiciones evientes que un grafo $G$ debe verificar para ser hamiltoniano:
+    \begin{itemize}
+        \item $\delta (G) \geq 2$
+        \item $G$ conexo
+        \item Las aristas con extremos en vertices de grado 2 deben aparecer en el ciclo de Hamilton (si existe).
+    \end{itemize}
+}
+
+\ex{
+    \begin{itemize}
+        \item $K_{m,n}$ es hamiltoniano si y solo si $m = n$.
+    \end{itemize}
+}
+
+\thm{\begin{center} Condicion necesaria para la existencia de ciclos hamiltonianos \end{center}}
+{
+    Si $G$ es hamiltoniano, entonces para todo $\emptyset \neq S \subseteq V(G)$, el grafo $G - S$ posee a lo sumo $|S|$ componentes conexas.
+}
+\pf{
+    Supongamos $G$ es hamiltoniano. Sea $C$ un ciclo hamiltoniano en $G$ y $\emptyset \neq S \subseteq V(G)$. Sea $k \in \mathbb{N}$ el numero de componentes conexas de $G - S$.
+
+    Observemos que la cantidad de aristas de $C$ con al menos un extremo en $S$ es a lo sumo $2 \; |S|$. 
+    
+    Por otro lado, para una componente conexa de $G - S$ deben existir al menos dos aristas de $C$ con un extremo en dicha componente y el otro en $S$.
+    Luego, existen al menos $2k$ aristas con un extremo en S.
+
+    Tenemos entonces que la cantidad de aristas con extremo en $S$ es al menos $2k$ y a lo sumo $2|S|$. Esto es,
+    \[\therefore \; \; 2k \leq 2 |S| \Longrightarrow k \leq |S|\]
+}
+
+\cor{
+    Si un grafo $G$ tiene vertices de corte entonces no es hamiltoniano.
+}
+
+\defn{Cantidad de componentes conexas}{
+    Dado un grafo $G$, notaremos $c(G)$ al numero de componentes conexas de $G$.
+}
+
+\thm{
+    Condicion suficiente para la existencia de ciclos hamiltonianos
+}{
+    Si $G$ es un grafo simple con $|V(G)| \geq 3$ tal que
+    \[\forall{u, v \in V(G)}, u \neq v, uv \notin E(G) \; \; \; d_G (u) + d_G (v) \geq n \Longrightarrow G \; es \; hamiltoniano\]
+}
+\pf{
+    Supongamos por el absurdo que existe un grafo $G$ no hamiltoniano tal que satisface las hipotesis. Notemos que si adicionamos aristas a $G$, seguira verificando las hipotesis. Por lo tanto, podemos considerar a $G$ maximal en aristas, $i. e.$ $G$ no es hamiltoniano, satisface las hipotesis, y ademas es maximal en $E(G)$, si agregamos una arista se convierte en hamiltoniano.
+
+    Sean entonces $u, v \in V(G)$ tales que $uv \notin E(G)$ (deben existir, de otra manera seria $G \approxeq K_n \; hamiltoniano$). Tenemos que entonces en $G + uv$ existira un ciclo hamiltoniano. Ademas, ese ciclo necesariamente contendra a la arista $uv$, pues de otra manera ya existia un ciclo hamiltoniano previo a añadir la arista.
+
+    Entonces, $G$ tiene un $u, v-camino \; simple$ que pasa por todos los vertices (el que se convierte en ciclo al agregar $uv$ a $E(G)$). Sea
+    \[P = u = v_1 \; v_2 \; v_3  \; \dots v_i \; v_{i + 1} \; \dots \; v_{n - 1} \; v_n = v\]
+
+    Queremos probar ahora que deben existir dos vertices consecutivos, $v_i , v_{i + 1}$ tales que $u$ es adyacente a $v_i$ y $v$ a $v_{i + 1}$ o viceversa. Esto nos permitiria construir un ciclo hamiltoniano en $G$.
+
+    Sean
+    \[S = \{i \in [n]: v_{i + 1} \in N(u)\}\]
+    \[T = \{i \in [n]: v_i \in N(v)\}\]
+
+    Ahora por hipotesis tenemos que $n \leq d_G (u) + d_G (v)$. Pero notemos que 
+
+    \[ n \leq d_G (u) + d_G (v) = |S| + |T| = |S \cup T| + |S \cap T|  \]
+
+    Observemos que $n \notin S \cap T$ y $n \notin S \cup T$, luego tenemos que el cardinal de $S \cup T$ es a lo sumo $n - 1$. En consecuencia, debera ser $|S \cap T| \geq 1$ para que se verifique la desigualdad.
+
+    Esto es, existe un indice $i_0 \in S \cap T$, luego $v_{i_0}v \in E(G)$ y $v_{i_0 + 1}u \in E(G)$. Entonces, consideremos el ciclo
+    \[C = v_1 \; \dots \; v_{i_0} \; v \; \dots \; v_{i_0 + 1} \; u\]
+
+    $C$ es un ciclo hamiltoniano, contradiccion.
+
+    $\therefore$ si $G$ satisface las hipotesis entonces es hamiltoniano.
+}
+
+\cor{
+    Si $G$ es un grafo simple con 
+    \[|V(G)| \geq 3 \; \; \; \land \; \; \; \delta (G) \geq \frac{n}{2} = \frac{|V(G)|}{2} \]
+
+    Entonces $G$ es hamiltoniano.
+}
+
+\cor{
+    Sea $G$ un grafo simple. Si existen $u, v \in V(G)$ tales que
+    \[u \neq v, \; \; uv \notin E(G),\; \; d_G (u) + d_G (v) \geq n\]
+    Entonces
+    \[G \; es \; hamiltoniano \iff G + uv \; es \; hamiltoniano\]
+}
+
+\end{document}

@@ -1,0 +1,472 @@
+\documentclass[APUNTE_COMPLEMENTOS.tex]{subfiles}
+
+\begin{document}
+% ------------------------------------------------------------------------------
+
+% \section{Examples}
+
+% \section{Theorem System}
+
+% Theorem System
+% The following boxes are provided:
+%   Definition:     \defn 
+%   Theorem:        \thm 
+%   Lemma:          \lem
+%   Corollary:      \cor
+%   Proposition:    \prop   
+%   Claim:          \clm
+%   Fact:           \fact
+%   Proof:          \pf
+%   Example:        \ex
+%   Remark:         \rmk (sentence), \rmkb (block)
+% Suffix
+%   r:              Allow Theorem/Definition to be referenced, e.g. thmr
+%   p:              Add a short proof block for Lemma, Corollary, Proposition or Claim, e.g. lemp
+%                   For theorems, use \pf for proof blocks
+
+% --------------------------------------------------------------------------------
+\clearpage
+\appendix
+
+\chapter{Resultados de la practica.}
+\section{Introduccion a la Teoria de Grafos}
+
+\prop{
+  Sea $G$ un grafo simple con $n$ vertices y $m$ aristas. Entonces,
+  \[m \leq \binom{n}{2} \]
+}
+
+\prop{
+  Sea $G[X,Y]$ un grafo simple bipartito con $n$ vertices y $m$ aristas, donde $|X| = r$ y $|Y| = s$. Entonces,
+  \[m \leq rs\]
+  \[m \leq \frac{n^2}{4}\]
+}
+
+\prop{
+  \begin{itemize}
+    \item Todo camino es bipartito.
+    \item Un ciclo es bipartito si y solo si tiene longitud par.
+  \end{itemize}
+}
+
+\prop{
+  Para $n \geq 1$, el $n-$cubo $Q_n$ es el grafo cuyo conjunto de vertices es el conjunto de todas las $n-$uplas $(a_1, \dots, a_n)$ con $a_i \in {0, 1}$ para cada $i$, donde dos $n-$uplas son adyacentes si difieren en exatamente una coordenada.
+
+  Los grafos $Q_n$ verifican que
+  \begin{itemize}
+    \item Son $n-$regulares.
+    \item Son bipartitos para cada $n \geq 1$.
+    \item Son vertice transitivos, por ejemplo por el automorfismo con la suma en binario.
+  \end{itemize}
+}
+
+\prop{
+  Sea $G[X,Y]$ un grafo bipartito, Entonces
+  \[\sum_{v \in X} d(v) = \sum_{v \in Y} d(v)  \]
+
+  Ademas, si $G$ es $k-$regulares con $k \geq 1$, entonces $|X| = |Y|$.
+}
+
+\prop{
+  Un grafo $k-$partito es un grafo cuyo conjunto de vertices puede particionarse en $k$ conjuntos $X_1, \dots, X_k$ de manera que ninguna arista tiene ambos extremos en el mismo conjunto $X_i$.
+  
+  Entonces, sea $G = (V, E)$ un grafo simple $k-$partito con $n$ vertices y $m$ aristas, con $|X_i | = a_i$ para cada $i$. Se verifica que,
+  \[m \leq \frac{1}{2} \sum_{i = 1}^{k} a_i (n - a_{i})\]
+}
+
+\prop{
+  Sea $G$ un grafo simple de $n$ vertices y $m$ aristas, con $m > \binom{n-1}{2}$ entonces $G$ es conexo.
+}
+
+\clearpage
+\section{Isomorfismos}
+
+\prop{
+  Algunas propiedades invariantes por isomorfismo son:
+  \begin{itemize}
+    \item Tener $n$ vertices de grado $k$.
+    \item Tener una arista $(u, w)$ donde $d(u) = i$ y $d(w) = j$.
+    \item Ser conexo.
+    \item Ser bipartito.
+  \end{itemize}
+}
+
+\prop{
+  Si $G$ y $H$ son isomorfos, entonces tienen la misma secuencia de grados.
+}
+
+\defn{Lattice booleano}{
+  Para $n \geq 1$, el lattice booleano $BL_n$ es el grafo cuyo conjunto de vertices es el conjunto de todos los subconjuntos de $[n]$ y dos vertices $X$ e $Y$ son adyacentes si la diferencia simetrica $X \triangle Y$ tiene exactamente un elemento.
+}
+
+\prop{
+  El lattice booleano $BL_n$ es isomorfo al $n-$cubo $Q_n$ para todo $n \geq 1$.
+}
+
+\prop{
+  Dos grafos son isomorfos si y solo si sus vertices pueden ordenarse de manera que sus matrices de adyacencia sean iguales.
+}
+
+\prop{
+  Si $G$ es autocomplementario, entonces $G$ es conexo. Ademas, si $G$ es autocomplementario con $n$ vertices para $n > 1$, entonces $n = 4k$ o $n = 4k + 1$ para algun $k \in \mathbb{Z}^{+}$.
+}
+
+\prop{
+  Sea $G$ un grafo simple, entonces un automorfismo de $G$ es un automorfismo de $\overline{G}$. 
+}
+
+\prop{
+  Si $G$ es un grafo vertice transitivo, entonces es un grafo regular.
+}
+
+\clearpage
+\section{Subgrafos}
+
+\prop{
+  Sea $G = (V, E)$ un grafo con $|V| = n \geq 2$ y vertices $v_1 , v_2 , \dots , v_n$. Se define al grado promedio de $G$, denotado por $d(G)$, como
+  \[d(G) = \frac{1}{n} \sum_{v \in V} d(v)\]
+
+  Entonces, se verifica que
+  \[\delta (G) \leq d(G) \leq \Delta (G)    \]
+}
+
+\prop{
+  Sea $G$ un grafo simple claw-free. Entonces, si $\Delta (G) \geq 5$, $G$ tiene a $C_4$ somo subgrafo.
+}
+
+\thm{Caracterizacion de grafos bipartitos}{
+  Un grafo es bipartito si y solo si no tiene ningun ciclo impar como subgrafo.
+}
+
+\prop{
+  El $n-$cubo $Q_n$ es $K_{2,3}-free$.
+}
+
+\prop{
+  Para todo grafo $G$, $\alpha (G)  = \omega (\overline{G})$.
+}
+
+\prop{
+  Un grafo es un cografo si es $P_4 -free$. Un grafo es un cografo si y solo si los grafos modulares de su descomposicion modular son triviales.  
+}
+
+
+
+\clearpage
+\section{Ciclos eulerianos}
+
+\prop{
+  Si hay un camino de $v$ a $w$ entonces hay un camino simple de $v$ a $w$.
+}
+
+
+\prop{
+  Sea $G$ un grafo y $v \in V(G)$. Entonces, 
+  \begin{itemize}
+    \item $c(G) - 1 \leq c(G - v) \leq c(G) + d(v) - 1$.
+    \item Si $G$ es conexo, entonces $d(v) \geq c(G - v)$.
+    \item Si $v$ es un vertice de corte de un grafo, entonces $d(v) \geq 2$.
+    \item Si $d(v) \geq 2$ y $c(G - v) = c(G)$, entonces $G$ tiene un ciclo que contiene a $v$.
+  \end{itemize}
+}
+
+\prop{
+  Una arista en un grafo simple es de corte si y solo si no pertenece a ningun ciclo.
+}
+
+\prop{
+  Un vertice $v$ en un grafo conexo $G$ es un vertice de corte si y solo si existen vertices $u$ y $w$ en $G$ tales que todo camino de $u$ a $w$ pasa por $v$>
+}
+
+\thm{Caracterizacion de recorridos eulerianos}{
+  Un grafo conexo tiene un recorrido (no cerrado) euleriano si y solo si tiene exactamente dos vertices de grado impar.
+}
+
+\prop{
+  Si $D$ es un digrafo, entonces
+  \[\sum_{v \in V(D)} d^{+} (v) = \sum_{v \in V(D)} d^{-} (v)  \]
+}
+
+\prop{
+  Un digrafo $D$ es euleriano si y solo si $d^{+}(v) = d^{-} (v)$, $\forall v \in V(D)$ y el grafo subyacente de $D$ tiene a lo sumo una componente no trivial.
+}
+
+\clearpage
+\section{Ciclos Hamiltonianos}
+
+\prop{
+  El grafo de Petersen no tiene ciclos hamiltonianos pero si caminos hamiltonianos. Ademas, si se elimina cualquier vertices del grafo, entonces el subgrafo resultante si tiene un ciclo hamiltoniano.
+}
+
+\prop{
+  Sea $G=(V,E)$ un grafo conexo y bipartito, con $V = V_1 \cup V_2$ y $V_1 , V_2$ no vacios. Entonces, si $|V_1 | \neq |V_2 |$, $G$ no tiene un ciclo hamiltoniano.
+
+
+  Analogamente, si el grafo tiene un camino hamiltoniano, entonces 
+  \[|V _1 | - |V_2 | = \pm 1 \]
+}
+
+\prop{
+  Para $n \in \mathbb{N}$, con $n \geq 2$, la cantidad de ciclos hamiltonianos distintos en un grafo bipartito completo $K_{n,n}$ es
+  \[\frac{1}{2} (n - 1)! \; n!\]
+}
+
+\prop{
+  Un grafo $G$ tiene un camino hamiltoniano si y solo si el grafo $G \oplus K_1$ es hamiltoniano.
+}
+
+\thm{Condicion necesaria para la existencia de caminos hamiltonianos}{
+  Si un grafo $G$ tiene un camino hamiltoniano, entonces para todo $S \subset V(G)$ vale que $c(G - S) \leq |S| + 1$
+}
+
+\thm{Condicion suficiente para la existencia de caminos hamiltonianos}{
+  Sea $G = (V, E)$ un grafo simple con $n \geq 2$ vertices. Entonces, si $gr(v) \geq \frac{n - 1}{2}$ para todo $v \in V$, $G$ tiene un camino hamiltoniano.
+}
+
+\prop{
+  Sea $G = (V, E)$ un grafo y $S$ un conjunto estable en $G$. Para cada $a \in S$ y cualquier ciclo hamiltoniano $C$ de $G$, habra $gr(a) - 2$ aristas en $E$ incidentes en $a$ que no estan en $C$. Por lo tanto, habra al menos
+  \[\sum_{a \in S}(gr(a) - 2) = \sum_{a \in S} gr(a) - 2|S|  \]
+  aristas en $E$ que no estan en $C$.
+}
+
+\clearpage
+\section{Arboles}
+
+\prop{
+  Todo arbol es bipartito.
+}
+
+\prop{
+  \begin{itemize}
+    \item $K_n$ es un arbol solo para $n = 1$ o $n = 2$
+    \item $P_n$ es siempre un arbol
+    \item $C_n$ solo es un arbol para $n = 1$ o $n = 2$
+    \item $K_{n, m}$ es un arbol para cualesquiera $n, m$.
+    \item $Q_n$ es un arbol solo para $n = 1$.
+  \end{itemize}
+}
+
+\prop{
+  $T$ es un arbol $\iff$ $T$ no tiene bucles y para cada par de vertices $u, v \in V(T)$ existe un unico $(u, v)-$camino simple en $T$.
+}
+
+\prop{
+  $T$ es un arbol $\iff$ $T$ no tiene bucles, es conexo y cuando se agrega una arista entre dos vertices cualesquiera, se crea exactamente un ciclo.
+}
+
+\prop{
+  Un grafo con $n$ vertices y menos de $n - 1$ aristas no es conexo.
+}
+
+\prop{
+  Cada componente conexa de un bosque es un arbol.
+}
+
+\prop{
+  Sea $F$ un bosque de $k$ arboles , entonces $|E(F)| = |V(F)| - k$
+}
+
+\prop{
+  Sea $T$ un arbol. Entonces todo $v \in V(T)$ tal que $gr(v) \geq 2$ es un vertice de corte.
+}
+
+\prop{
+  Sea $G$ un grafo conexo. Entonces una $e \in E(G)$ esta contenida en todo arbol recubridor de $G$ si y solo si $e$ es de corte.
+}
+
+\defn{
+  Arbol $m-$ario
+}{
+  Un arbol enraizado es $m-$ario si todo vertice tiene a lo sumo $m$ hijos. Si en particular todo vertice tiene $0$ o $m$ hijos, se dice $m-ario$ completo.
+}
+
+\prop{
+  Sea $T$ un arbol $m-ario$ completo con $i$ vertices internos, $l$ hojas y $n$ vertices. Entonces,
+  \[l = i(m - 1) + 1\]
+  \[n = mi\]
+}
+
+\clearpage
+\section{Matching}
+
+\prop{
+  Sea $G$ tal que $\Delta (G) \leq 2$, entonces cada componente conexa de $G$ es un camino o un ciclo.
+}
+
+\prop{
+  Sea $G$ un grafo y $S \subseteq V(G)$ un conjunto de vertices saturado por un matching de $G$. Entonces, existe algun matching maximo que satura a $S$, pero no todo matching maximo lo satura.
+}
+
+\prop{
+  Sea $G$ un grafo hamiltoniano, entonces $G$ tiene un matching de tamaño $\lfloor \frac{n}{2} \rfloor$.
+}
+
+\prop{
+  Sean $M_1$ y $M_2$ dos matchings de un grafo simple $G$ tales que $|M_1 | > |M_2 |$. Entonces existen dos matchings $M_1 '$ y $M_2 '$ tales que 
+  \[|M_1 ' | = |M_1 | - 1\]
+  \[|M_2 ' | = |M_2 | + 1\]
+  \[M_1 ' \cup M_2 ' = M_1 \cup M_2\]
+  \[M_1 ' \cap M_2 ' = M_1 \cap M_2\]
+}
+
+\prop{
+  Sea $G$ un grafo bipartito conexo con una biparticion $(V_1 , V_2 )$ tal que todos los vertices de $V_1$ tienen distinto grado. Entonces, existe un matching que satura a $V_1$.
+}
+
+\prop{
+  Todo arbol tiene a lo sumo un matching perfecto.
+}
+
+\prop{
+  Sea $G$ un grafo bipartito. Entonces,
+  \[\alpha (G) = \frac{|V(G)|}{2} \iff G \; tiene \; un \; matching \; perfecto\]
+}
+
+\prop{
+  Sea $G$ un grafo simple sin vertices aislados. Entonces existe $M$ un matching tal que
+  \[M \geq \frac{|V(G)|}{\Delta(G) + 1}\]
+}
+
+\defn{$k-factor$ y $k-factoreable$}{
+  Un $k-factor$ de un grafo $G$ es un subgrafo $k-regular$ recubridor de $G$. Asi, un $1-factor$ de un grafo es un matching perfecto.
+
+  Diremos que un grafo $G$ es $k-factoreable$ si existen $k-factores$ $H_1 , \dots , H_r$ tales que
+  \[\forall i \neq j \; E(H_i ) \cap E(H_j ) = \emptyset\]
+  \[E(G) = \bigcup_{i = 1}^{r} E(H_i )\]
+}
+
+\prop{
+  Sea $G$ un grafo. Entonces si $G$ no es regular, no es $k-$factoreable para ningun $k \in \mathbb{N}$.
+  
+  Ademas, si es $m-regular$, entonces una condicion necesaria para que $G$ sea $k-$factoreable es que $m$ sea multiplo de $k$.
+}
+
+\clearpage
+\section{Coloreo}
+
+\prop{
+  Sea $G$ un grafo sin lazos con al menos una arista. Entonces,
+  \[G \; es \; bipartito \iff \chi(G) = 2\]
+}
+
+\prop{
+  Sean $G$ y $H$ dos grafos cualesquiera. Entonces,
+  \[\chi(G + H) = \max\{\chi(G), \chi(H)\}\]
+  \[\chi(G \oplus H) = \chi(G) + \chi(H) \]
+}
+
+\prop{
+  Sea $G$ un grafo con componentes conexas $C_1 , \dots , C_k$ y sea $G_i = G[C_i ]$. Entonces,
+  \[\chi(G) = \max\limits_{i = 1, \dots, k}\chi(G_i )\]
+}
+
+\prop{
+  Sea $G$ un grafo $k-color$ critico. Entonces,
+  \begin{itemize}
+    \item $G$ es conexo.
+    \item $gr(v) \geq k - 1$ para todo $v \in V(G)$.
+    \item $G$ no tiene vertices de corte. Mas aun, no tiene ninguna clique de corte (es decir, un conjunto de vertices que sean una clique y que al eliminarlos aumente la cantidad de componentes conexas).
+  \end{itemize}
+}
+
+\prop{
+  Dado un grafo cualquiera, existe un orden de sus vertices tal que el algoritmo greedy devuelve un coloreo optimo del grafo. Este se puede obtener por ejemplo, dado un $k-coloreo$ optimo, ordenando los vertices por sus clases de color de $1$ a $k$.
+}
+
+\prop{
+  Sea $G$ un grafo con vertices $v_1, \dots, v_n$ y una secuencia de grados $d_1 \geq d_2 \geq \cdots \geq d_n$ donde $d_i = d(v_i )$. Entonces,
+  \[\chi(G) \leq 1 + d_1 \]
+  O una mejora para esta cota, considerando que al colorear con el algoritmo greedy $i - 1$ vertices han sido coloreados en la iteracion $i$,
+  \[\chi(G) \leq 1 + \max\limits_{1 \leq i \leq n}\{d_i , i - 1\}\]
+}
+
+\prop{
+  Sea $G$ un grafo con $n$ vertices y $m$ aristas. Entonces,
+  \[\chi(G) + \chi(\overline{G}) \leq n + 1\]
+  \[\chi(G) \chi(\overline{G}) \leq \left(\frac{n + 1}{2} \right)^2\]
+  \[\chi(G) \leq \frac{1}{2} + \sqrt{2m + \frac{1}{4}}\]
+  \[\chi(G) \leq 1 + \max\{\delta(G'): G' \subseteq G \}  \]
+}
+
+\lem{}{
+  Sea $n \in \mathbb{N}$. Entonces, para todo par de numeros $a, b \in \mathbb{N}$ tales que
+  \[2 \sqrt{n} \leq a + b \leq n + 1  \]
+  \[n \leq ab \leq \left( \frac{n + 1}{2}\right)^2 \]
+  Existe un grafo $G$ con $n$ vertices para el cual $\chi(G) = a$ y $\chi(\overline{G}) = b$.
+}
+
+\prop{
+  Sean $G$ y $H$ grafos simples, con $|V(G)| = n$. Entonces,
+  \[\chi(G) = k \iff \alpha(G \square K_k) \geq n \]
+  \[\chi(G \square H) = \max\{\chi(G), \chi(H)\}  \]
+}
+
+\prop{
+  Sea $G$ un grafo. Entonces, las aristas de $G$ pueden ser coloreadas con $k$ colores si y solo si los vertices del grafo $L(G)$ pueden ser coloreados con $k$ colores.
+
+  \textbf{Obs.} Un coloreo por aristas de un grafo $G$ es una asignacion del conjunnto de aristas a un conjunto de colores tal que si dos aristas comparten un extremo, entonces tienen distintos colores asignados.
+}
+
+\prop{
+  Sea $G$ un grafo. Entonces,
+  \[\overline{G} \; es \; bipartito \iff G \; es \; perfecto\]
+}
+
+
+\section{Planaridad}
+
+\fact{
+  Si $G$ no es planar, entonces debe tener al menos 9 aristas (para formar un $K_{3,3}$.)
+}
+
+\prop{
+  Si $G$ es un grafo simple planar con al menos 3 vertices y ademas es $K_3-free$, entonces $|E(G)| \leq 2|V(G)| - 4$.
+}
+
+\prop{
+  Sea $G$ un grafo con $n$ vertices, $m$ aristas, $f$ caras y $k$ componentes conexas. Entonces,
+  \[n - m + f = k + 1\]
+}
+
+\prop{
+  Si $G$ es planar entonces $\chi(G) \leq 6$ (independiente del teorema de los 5 o 4 colores).
+}
+
+\prop{
+  Si $G$ es un grafo sin lazos, conexo, planar y con al menos 11 vertices, entonces el complemento de $G$ no es planar.
+}
+
+\prop{
+  Sea $k \in \mathbb{N},  k \geq 3$. Si $G$ es un grafo planar, conexo, con $n$ vertices, $m$ aristas, al menos un ciclo y tal que cada ciclo tiene al menos longitud $k$, entonces
+  \[m \leq \frac{k}{k-2} (n - 2)\]
+}
+
+\cor{
+  El grafo de Petersen no es planar por el resultado anterior. Ademas, para volverlo planar es necesario borrarle al menos 2 aristas (y se puede probar que con exactamente dos aristas ya admite una inmersion plana).
+}
+
+\prop{
+  Todo subgrafo de un grafo planar es planar.
+}
+
+\prop{
+  Un grafo es planar si y solo si todo grafo homeomorfo a el lo es.
+}
+
+\prop{
+  Todo subgrafo propio de $K_5$ y de $K_{3, 3}$ es planar.
+}
+
+\fact{
+  Si dos grafos son isomorfos no necesariamente sus grafos duales lo seran.
+}
+
+\prop{
+  Un grafo planar es bipartito si y solo si para toda inmersion plana, la longitud de cada cara es par.
+}
+
+
+
+
+
+\end{document}

@@ -1,0 +1,299 @@
+\documentclass[APUNTE_COMPLEMENTOS.tex]{subfiles}
+
+\begin{document}
+% ------------------------------------------------------------------------------
+
+% \chapter{Examples}
+
+% \section{Theorem System}
+
+% Theorem System
+% The following boxes are provided:
+%   Definition:     \defn 
+%   Theorem:        \thm 
+%   Lemma:          \lem
+%   Corollary:      \cor
+%   Proposition:    \prop   
+%   Claim:          \clm
+%   Fact:           \fact
+%   Proof:          \pf
+%   Example:        \ex
+%   Remark:         \rmk (sentence), \rmkb (block)
+% Suffix
+%   r:              Allow Theorem/Definition to be referenced, e.g. thmr
+%   p:              Add a short proof block for Lemma, Corollary, Proposition or Claim, e.g. lemp
+%                   For theorems, use \pf for proof blocks
+
+% --------------------------------------------------------------------------------
+
+\chapter{Matching}
+
+\section{Definiciones y primeros resultados}
+
+\defn{Matching}{
+  Un matching en un grafo $G$ es un conjunto de aristas (no bucles) que no tienen extremos en comun.
+}
+
+\defn{Vertice saturado}{
+  Un vertice extremo de alguna arista de un matching $M$ se dice saturado por $M$ ($M$-saturado).
+}
+
+\defn{Matching perfecto}{
+  Un matching es perfecto en un grafo $G$ si satura todos los vertices de $G$
+}
+
+\rmkb{
+  \begin{itemize}
+  \item Si un grafo tiene un matching perfecto, entonces la cantidad de vertices es par (pues la cantidad de vertices saturados por un matching es par). Esto es una condicion necesaria pero no suficiente para la existencia de un matching perfecto.
+  \item Una cota superior para el tamaño maximo de un matching en un grafo es la mitad de los vertices.
+  \item Un matching es maximal si no esta contenido en ningun otro matching distinto. Es decir, no podemos seguir agregandole aristas y que siga siendo un matching.
+  \end{itemize}
+}
+
+\defn{Matching maximo y maximal}{
+  Un matching maximal en un grafo $G$ es un matching tal que no existe otro matching de mayor cardinal en $G$ que lo contenga.
+
+  Un matching maximo en $G$ es un matching de cardinal maximo en $G$
+}
+
+\rmkb{
+  Un matching puede ser maximal porque no puedo seguir agregandole aristas, pero no ser maximo porque eligiendo otras aristas puedo obtener un matching de mayor cardinal.
+}
+
+\ex{
+  \begin{itemize}
+    \item Si $M$ es un matching maximal no necesariamente es maximo.
+    \item Si $M$ es un matching maximo entonces es maximal, pues si no lo fuera existiria un matching $M'$ que lo contiene y es mayor, luego $M$ no es maximo.
+  \end{itemize}
+}
+
+\defn{Camino $M$-alternante}{
+  Dado un matching $M$ en $G$, un camino $M$ alternante es un camino en $G$ que alterna aristas en $M$ y $E(G) - M$.
+}
+
+\defn{Camino $M$-aumentante}{
+  Dado un matching $M$ diremos que un camino es $M-aumentante$ si es $M-alternante$ y sus extremos son distintos y no son $M-saturados$.
+}
+
+\lem{Condicion necesaria para matchings maximos}{
+  Si $P$ es un camino $M-aumentante$ en $G$, entonces al sacar las aristas de $M \cap P$ y colocar las aristas de $P - M$, tenemos un nuevo matching $M'$ que tiene una arista mas que $M$. Luego, si $M$ es un matching maximo entonces no existe camino $M-aumentante$.
+}
+
+\rmkb{
+  Esto realmente es un si y solo si. Es decir, tambien vale que si no existe un camino $M-aumentante$ entonces $M$ es maximo.
+}
+
+\ex{
+
+  Consideremos $P_n$. Entonces, si $n$ es par tenemos que existe un matching perfecto y es maximo, por ejemplo considerando los vertices $v_i v_{i+1}$ para todo $i$ impar. Este matching es de tamaño $\frac{n}{2}$.
+
+  Si $n$ impar entonces tomando el mismo matching sin considerar la ultima arista, tenemos que es un matching maximo y es de tamaño $\lfloor \frac{n}{2}\rfloor$.
+}
+
+\ex{
+  
+  Consideremos $K_n$. Entonces,
+  \begin{itemize}
+    \item Si $n$ es par, entonces tiene un matching perfecto.
+    \item Si $n$ es impar, no tiene un matching perfecto pero tambien existe un matching maximo de tamaño $\lfloor \frac{n}{2}\rfloor$.
+  \end{itemize}
+}
+
+\ex{
+
+  Consideremos $K_{n,m}$. Entonces el tamaño maximo es $\min{n, m}$, y si $n \neq m$ son distintos, no existe un matching perfecto (?).
+}
+
+\defn{Diferencia simetrica}{
+  Sean $A, B$ dos conjuntos. Entonces definimos a la diferencia simetrica como
+  \[A \triangle B = (A \cup B) - (A \cap B) = (A - B) \cup (B - A)  \]
+}
+
+\fact{
+  Sea $G$ un grafo y $M$, $M'$ dos matchings de $G$. Definimos al grafo $F$ tal que $F = M \triangle M'$, luego si $G_F = (V(G), F)$, vale
+  \[\Delta(G_F) \leq 2\]
+  Esto sigue de que dado un vertice $v \in V(G)$, a lo sumo dos aristas pueden incidir en el en el grafo $G_F$, tal caso se verifica cuando dos aristas distintas que inciden en $v$ pertenecen cada una a un matching distinto.
+
+  % Luego, el grafo $G_F$ es un arbol binario. ( ??? )
+}
+
+\lemp{ Diferencia simetrica de matchings  
+}{
+  Toda componente conexa de la diferencia simetrica de dos matchings es un camino o un ciclo par.  
+}{
+  Sean $M$ y $M'$ matchings de $G$ y $F = M \triangle M'$. Consideremos el grafo $G_F = (V(G), F)$. Luego, todo vertic de $G_F$ tiene grado a lo sumo 2, ya que en cada vertice puede incidir a lo sumo una arista de cada matching.
+
+  En consecuencia, $\Delta (G_{F}) \leq 2$ y por lo tanto toda componente conexa de $G$ es un camino o un ciclo (probar esto).
+  
+  Si una componente conexa es un ciclo, debe alternar entre aristas de $M$ y de $M'$, por lo tanto su longitud es par.
+}
+
+\thm{
+  Caracterizacion de matchings maximos
+}{
+  Un matching $M$ de un grafo $G$ es maximo si y solo si $G$ no tiene camino $M-aumentante$.
+}
+
+\pf{
+
+  $\Longrightarrow )$ Vale por el lema previo (cond. necesaria).
+  
+  $\Longleftarrow )$ Supongamos que $M'$ es un matching de $G$ con $|M'| > |M|$. Probaremos que existe un camino $M-aumentante$ en $G$. Sea $F = M' \triangle M$. Cada componente de $G_F$ es un camino o un ciclo par (por el lema previo). Como $|M'| > |M|$, debe existir un camino $P$ en $G_F$ que tiene mas aristas de $M'$ que de $M$. Como el camino alterna aristas de ambos matchings, los extremos estan saturados por $M'$. En consecuencia, $P$ es un camino $M-aumentante$ en $G$.
+
+  (Obs. que no pueden ser todos ciclos pares en M' porque en la diferencia simetrica tendriamos igual cardinal. Por eso debe existir un camino, que en particular es el $M-aumentante$)
+}
+
+\section{Matching en grafos bipartitos}
+
+Sea $G[X,Y]$ un grafo bipartito y $M$ un matching en $G$ que satura todo los vertices de $X$. Es claro que si un subconjunto $S \subseteq X$ entonces en $N(S) = \cup_{v \in S} N(v)$ existen al menos $|S|$ vertices.
+
+Esta condicion, llamada condicion de Hall (para todo $S \subseteq X, |N(S)|>|S|$) es suficiente y necesaria para la existencia de un matching que satura $X$.
+
+\thm{Caracterizacion de matchings en grafos bipartitos (Hall)}{
+  Un grafo bipartito $G[X, Y]$ tiene un matching que satura $X$ si y solo si, para todo $S \subseteq X, |N(S)|\geq |S|$.
+}
+
+\pf{
+
+  $\Longrightarrow )$ Para $S \subseteq X$ existen $|S|$ vertices saturados en $Y$ por aristas con un extremo en $S$, luego $|N(S)| \geq |S|$.
+
+  $\Longleftarrow )$ Supongamos que existe un matching maximo $M$ en $G$ que no satura $X$ y encontremos $S \subseteq X$ tal que $|N(S)| < |S|$, es decir, un $S$ tal que no se verifique la condicion de Hall.
+
+  Sea $u \in X$ un vertice no saturado por $M$. Tenemos entonces que todas las aristas incidentes en $u$ no pertenecen a $M$. Consideremos entonces los vertices en la vecindad de $u$. Estos vertices deben estar saturados por $M$, de otra manera, si $v \in N(u)$ no lo estuviera, podemos considerar el matching $M \cup {uv}$ y obtendriamos un matching de mayor cardinal que $M$, absurdo pues $M$ es maximo.
+
+  Consideremos todos los caminos $M$ alternantes que comienzan en $u$. Sea $T \subseteq Y$ el conjunto de todos los vertices que pertenecen a alguno de estos caminos en $Y$ y $S \subseteq X$ el conjunto de todos los vertices que pertenecen a alguno de estos caminos en $X$ (obs. que $u \in X$).
+
+  Por como lo hemos definido, $T \subseteq N(S)$, pues existen aristas que los conectan en algun camino. Veamos que $T = N(S)$.
+
+  Sea $y \in N(S) - T$.  Es decir, $y$ es adyacente a algun vertice en $S$, pero no pertenece a $T$. Notemos que $y$ no puede estar $M-saturado$ pues en tal caso seria $y \in T$. 
+
+  Como $y$ esta en $N(S)$, existe una arista con un extremo en un vertice $s \in S - {u}$ (no puede ser $u$ pues en tal caso existe el camino $uy$ alternante luego $y \in T$) y otro en $y$.
+  
+  Como $s$ esta en $S$, hay un camino alternante que va de $u$ a $s$. Agregando la arista $sy$ a este camino, tenemos un camino $M-aumentante$, luego por caracterizacion $M$ no es maximo, absurdo.
+
+  $\therefore T = N(S)$. Por lo tanto,
+  \[|N(S)| = |T| = |S - {u}| = |S| - 1 < |S|\]
+
+
+
+  
+}
+\rmkb{
+  Una condicion necesaria para la existencia de matchings perfectos en grafos bipartitos es que ambas particiones tengan igual cardinal. 
+}
+
+\corp{ 
+  Todo grafo bipartito $k-regular$ con $k \geq 1$ tiene un matching perfecto
+}{
+  Sea $G[X, Y]$ un grafo bipartito $k-regular$. La cantidad de aristas de $G$ es $k|X|$ ya que toda arista tiene exactamente un extremo en $X$ y hay $k$ aristas con un extremo en un vertice fijo. Analogamente para $Y$, la cantidad de aristas es $k|Y|$. Luego, $k|X| = k|Y| \Longrightarrow |X| = |Y|$. Entonces, un matching que sature a $X$ o que sature a $Y$ es un matching perfecto. 
+
+  Veamos que vale la condicion de Hall para $X$. Sea $S \subseteq X$ y $E(S)$ las aristas con un extremo en $S$ (y el otro en $N(S)$). Como $G$ es $k-regular$, $|E(S)| = k|S|$. Por otro lado, la cantidad de aristas con un extremo en $N(S)$ es $k|N(S)|$, entonces $|E(S)| \leq k|N(S)|$, pues toda arista incidente en un vertice de $S$ debe pertenecer a las aristas de $N(S)$, pero $E(N(S))$ puede contener otras aristas. 
+
+  \[\therefore k|S| \leq k|N(S)| \Longrightarrow |S| \leq |N(S)|\]
+}
+
+\section{ Matching y cubrimientos}
+
+\defn{
+  Cubrimiento de aristas por vertices
+}{
+  Un cubrimiento de aristas por vertices de un grafo $G$ es un conjunto de vertices $F \subseteq V(G)$ tal que toda arista de $G$ tiene al menos un extremo en $F$.
+  
+  Notamos $\beta (G)$ al tamaño minimo de un cubrimiento de aristas por vertices.
+}
+
+\fact{
+  Si $M$ es un matching y $F$ es un cubrimiento por vertices, entonces siempre vale 
+  \[|M| \leq |F|\]
+  Esto sigue de que en el cubrimiento $F$, cada vertice puede cubrir a lo sumo una arista del matching, pues si un mismo vertice cubriera dos aristas de $M$, entonces $M$ no era un matching. Luego, minimamente necesitamos un vertice por cada arista del matching.
+}
+
+\begin{comment}
+\rmkb{
+  Algunos resultados sobre $\beta (G)$ son:
+  \begin{itemize}
+    \item $\beta(K_N) = n - 1$
+    \item $\beta(K_{n, m}) = \min\{n, m\}$ es claro que un cubrimiento resulta de tomar el minimo de los dos, pero ademas ese cubrimiento es minimo pues de no considerar algun vertice, tenemos que todas sus aristas no serian cubiertas.
+    \item $\beta(C_n) = \lceil \frac{n}{2} \rceil$, cada vertice cubre exactamente dos vertices. Luego, necesitamos al menos la mitad de los vertices, y si $n = 2k + 1$ es impar, necesitamos un vertice extra pues con $k$ vertices cubririamos a lo sumo $2k$ aristas.
+    \item $\beta(P_n) = \lfloor \frac{n}{2} \rfloor$ A lo sumo cada vertice cubre dos aristas, luego queremos que $2 |F|$ sea al menos $n - 1$, de donde $\frac{n-1}{2} \leq |F|$. Observemos que el cubrimiento siempre resulta de tomar todos los vertices pares si n es impar, o los impares si $n$ es par.    
+    \item $\beta (W_n) = \lceil \frac{n}{2} \rceil + 1$ (chequear)
+    \item $\beta(Q_n) = 2^{n - 1}$
+    \item $\beta(K(n, k)) = $
+  \end{itemize}
+}
+\end{comment}
+
+\fact{
+  Sea $\alpha ' (G)$ el tamaño de un matching maximo en $G$. De las observaciones anteriores, resulta que para todo grafo $G$
+  \[\beta (G) \geq \alpha' (G)\]
+
+  Es decir, hallar un cubrimiento nos da una cota superior para el cardinal de los matchings de $G$.
+}
+
+\thm{Konig-Egervary}{
+  Si $G$ es un grafo bipartito entonces $\beta (G) = \alpha' (G)$.
+}
+
+\pf{
+  Sea $F$ un cubrimiento por vertice minimo de $G[X, Y]$, $|F| = \beta (G)$. Construiremos un matching $M$ tal que $|M| = |F|$, lo que implica la tesis.
+
+  Sean $R = F \cap X$ y $T = F \cap Y$. Consideremos $H$ el subgrafo inducido por $R \cup (Y - T)$ y $H'$ el subgrafo inducido por $T \cup (X - R)$.
+
+  Como $F = R \cup T$ es un cubrimiento por vertices de $G$, entonces no hay aristas entre $Y - T$ y $X - R$, de otra manera esas aristas no podrian ser cubiertas por F (pueden haber aristas entre R y T). 
+  
+  Queremos construir un matching para cada uno de los subgrafos inducidos, $H$ y $H'$.
+  
+  Sea $S \subseteq R$, supongamos que valiera $|N_H (S)| < |S|$. Veamos que $(R - S) \cup N_H (S) \cup T$ es un cubrimiento de $G$. Tenemos que  $R \cup T$ es un cubrimiento de $G$, queremos probar que puedo reemplazar a $R$ por $(R - S) \cup N_H (S)$, es decir, que cubren las mismas aristas.
+  
+  Fijemonos que podemos expresar a $R$ como $R = (R - S) \cup S$. Luego:
+  \begin{itemize}
+    \item Las aristas que iban de $S$ a $T$ las cubre $T$.
+    \item Las aristas que iban de $S$ a $Y - T$ las cubre $N_H (S)$.
+    \item Las aristas que iban de $R - S$ a $T$ las cubre $T$.
+    \item Las aristas que de $R - S$ a $Y - T$ las cubre $R - S$.
+  \end{itemize} 
+
+  Entonces efectivamente, $(R - S) \cup N_H (S) \cup T$ es un cubrimiento de $G$.
+  
+  Pero $|T \cup (R - S) \cup N_H (S)| < |T \cup R | = \beta (G)$ por nuestro supuesto. Es decir, al reemplazar $R$ por $N_H(S) \cup (R - S)$ tenemos un cubrimiento de cardinal menor que el minimo, absurdo.
+  
+  En consecuencia, $|N_H (S) | \geq |S|$. Luego, se verifica la condicion de Hall para $R$ en $H$.
+
+  Entonces, existe un matching $M_H$ en $H$ que satura $R$. Por lo tanto, $|M_H | = |R|$. Analogamente, se puede obtener un matching $M_{H'}$ en $H'$ que satura a $T$ y $|M_{H'}| = |T|$.
+
+  Como $V(H) \cap V(H') = \emptyset$, $M = M_H \cup M_{H'}$ es un matching de $G$ con $|M| = |X \cup T| = |F|$ como estabamos buscando.
+}
+
+\ex{
+  Un ejemplo de un grafo que no verifica que el numero de cubrimiento coincide con el numero de matching debe contener un ciclo impar, pues en caso contrario seria bipartito.
+  
+  Por ejemplo, $C_3$ verifica que $\beta (C_3) = 2$ mientras que $\alpha ' (C_3) = 1$.
+
+}
+
+\rmkb{
+  Los vertices que no pertenecen a un cubrimiento de aristas por vertices deben formar un estable. De otra manera, si existiera entre ellos alguna arista, esa arista no seria cubierta, luego no seria un cubrimiento por vertices.
+}
+
+\thm{Caracterizacion de estables/cubrimientos por vertices}{
+  Sean $G$ un grafo, $S \subseteq V(G)$ y $n = |V(G)|$. Luego, $S$ es un estable de $G$ si y solo si $\overline{S}$ es un cubrimiento de aristas por vertices de $G$. Ademas, 
+  \[\alpha (G) + \beta (G) = n\]
+}
+
+\fact{
+  Algunos resultados sobre $\beta (G)$ son:
+  \begin{itemize}
+    \item $\beta(K_N) = n - 1$
+    \item $\beta(K_{n, m}) = \min\{n, m\}$  y $\alpha (K_{n, m}) = \max\{n, m\}$
+    \item $\beta(C_n) = \lceil \frac{n}{2} \rceil$, y $\alpha (C_n) = \lfloor \frac{n}{2} \rfloor$
+    \item $\beta(P_n) = \lfloor \frac{n}{2} \rfloor$ y $\alpha(C_n) = \lceil \frac{n}{2} \rceil$ \vspace{3pt}
+    \item $\beta (W_n) = \lceil \frac{n}{2} \rceil + 1$ y $\alpha(W_n) = \lfloor \frac{n}{2} \rfloor$
+    \item $\beta(Q_n) = 2^{n - 1} = \alpha (Q_n)$
+    \item $\beta(K(n, k)) = \binom{n}{k} - \binom{n - 1}{k - 1} = \binom{n - 1}{k}$ y $\alpha (K(n, k))  = \binom{n - 1}{k - 1}$
+  \end{itemize}
+}
+
+\rmkb{
+  Un matching en un grafo $G$ es un estable en $L(G)$. Por eso el numero de matching recibe la notacion $\alpha'$, pues el numero de matching de un grafo es el numero de estabilidad de su grafo de linea.
+}
+\end{document}

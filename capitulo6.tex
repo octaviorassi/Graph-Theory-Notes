@@ -1,0 +1,171 @@
+\documentclass[APUNTE_COMPLEMENTOS.tex]{subfiles}
+
+\begin{document}
+
+% ------------------------------------------------------------------------------
+
+% \chapter{Examples}
+
+% \section{Theorem System}
+
+% Theorem System
+% The following boxes are provided:
+%   Definition:     \defn 
+%   Theorem:        \thm 
+%   Lemma:          \lem
+%   Corollary:      \cor
+%   Proposition:    \prop   
+%   Claim:          \clm
+%   Fact:           \fact
+%   Proof:          \pf
+%   Example:        \ex
+%   Remark:         \rmk (sentence), \rmkb (block)
+% Suffix
+%   r:              Allow Theorem/Definition to be referenced, e.g. thmr
+%   p:              Add a short proof block for Lemma, Corollary, Proposition or Claim, e.g. lemp
+%                   For theorems, use \pf for proof blocks
+
+% --------------------------------------------------------------------------------
+
+\chapter{Planaridad}
+
+\section{Definiciones}
+
+\defn{Curva, dibujo, cruce.}{
+  Una curva es la imagen de una funcion continua del intervalo [0, 1] al plano $R^2$. Diremos que es una $u,v-curva$ cuando comienza en $u$ y termina en $v$. Una $u,v-$curva es cerrada si $u = v$ y es simple si no repite puntos, exceptos quizas los extremos.
+
+  Un dibujo de un grafo $G$ es una funcion $f$ definida en $V(G) \cup E(G)$ que le asigna a cada vertice $v$ un punto $f(v)$ del plano y a cada arista de extremos $u$ y $v$ una $f(u),f(v)-$curva. Ademas, las imagenes de dos vertices distintos son distintas.
+
+  Dadas dos aristas $e, e'$ diremos que un punto en la curva $f(e) \cap f(e')$ que no es un extremo en comun es un cruce.
+}
+
+\rmkb{
+  No hay tres aristas que tengan un punto interior en comun, ninguna arista pasa por un vertice que no sea su extremo, y dos aristas no son tangentes. Si dos aristas se cruzan mas de una vez, entonces puede modificarse su dibujo para que se crucen a lo sumo una vez.
+
+  Todas estas propiedades pueden lograrse a partir de un dibujo realizando pequeñas modificaciones 
+}
+
+\defn{Grafo planar}{
+  Un grafo es planar si admite un dibujo sin cruces. Tal dibujo diremos que es una inmersion plana del grafo. Diremos que un grafo es un grafo plano si es un grafo planar con una inmersion plana particular.
+}
+
+\ex{
+  \begin{itemize}
+    \item $K_4$ es planar.
+    \item $P_n$ es planar para todo $n \in mathbb{N}$.
+    \item $C_n$ es planar para todo $n \geq 3$.
+    \item $W_n$ es planar para todo $n \geq 3$.
+  \end{itemize}
+}
+
+\rmkb{Dado un grafo $G$ no simple y $G'$ su grafo simple subyacente, entonces $G$ es planar si y solo si $G'$ lo es.}
+
+\defn{Caras}{
+  Dado un grafo plano, diremos que sus caras son las regiones maximales del plano que no contienen puntos que sean imagenes del dibujo de $G$. Es decir, no contienen ni vertices ni curvas (aristas).
+}
+
+\rmkb{Las caras son disjuntas dos a dos. Todos los grafos tienen una cara exterior. Dos puntos del plano $p, q$ estan en una misma cara $F$ si y solo si existe una $p,q-$curva totalmente contenida en $F$.}
+
+\thm{Teorema de la Curva de Jordan}{
+  Toda curva cerrada simple $C$ divide al plano en dos regiones, una region acotada que llamaremos el interior de $C$, $int(C)$, y una region no acotada que llamaremos exterior de $C$, y denotamos $ext(C)$.
+
+  Ademas, si $p,q$ son dos puntos tales que $p \in int(C)$ y $q \in ext(C)$, entonces toda $p,q-$curva interseca a $C$.
+}
+
+\prop{
+  $K_5$ no es planar.
+}
+
+\defn{Grafo dual.}{
+  Dado $G$ un grafo plano, el grafo dual $G*$ es un grafo plano que tiene como conjunto de vertices a las caras de $G$, y por cada arista $e \in E(G)$ que esta en la frontera de las caras $X$ de un lado e $Y$ de otro, tenemos la arista $e* = XY \in E(G*)$.
+}
+
+\rmkb{
+  Si $G$ es un grafo plano simple, no necesaramiente $G*$ es simple. Notemos ademas que:
+
+  \begin{itemize}
+    \item Si $v$ es un vertice de grado $1$ que limita con cierta cara $F$, entonces $F$ tiene un bucle en el grafo dual.
+    \item Si $v$ es un vertice de grado $2$ en la frontera de dos caras $F_1, F_2$ entonces en $G*$ hay aristas multiples conectando estas caras.
+  \end{itemize}
+}
+
+\rmkb{
+  Si $G$ es un grafo plano y conexo, entonces $G*$ admite una inmersion plana de manera que su dual sea isomorfo a $G$.
+}
+
+\rmkb{Dos inmersiones planas distintas de un mismo grafo pueden tener grafos duales que no son isomorfos.}
+
+\defn{Longitud de una cara}{
+  Sea $G$ un grafo plano y $F$ una cara de $G$. La longitud de $F$, que notaremos $long(F)$, es la longitud del camino cerrado mas corto que contenga a todas las aristas que limiten con la cara $F$.
+}
+
+\rmkb{
+  \[long(F) = d_{G*}(F)\]
+}
+
+\prop{
+  Si $G$ es un grafo plano con caras $F_1, \dots, F_f$, entonces\
+  \[\sum_{i = 1}^{f} long(F_i) = 2 |E(G)|\]
+}
+
+\thm{Formula de Euler}{
+  Si $G$ es un grafo plano conexo con $n$ vertices, $m$ aristas y $f$ caras, entonces
+  \[n - m + f = 2\]
+}
+
+\thm{}{
+  Si $G$ es un grafo simple planar con al menos 3 vertices, entonces
+  \[|E(G)| \leq 3|V(G)| - 6\]
+}
+
+\cor{
+  Si $G$ es un grafo planar, entonces existe $v \in V(G)$ tal que $d(v) \leq 5$.
+}
+
+\ex{
+  Si $G$ es un grafo simple planar con al menos 3 vertices y $K_3 - free$ entonces $|E(G)| \leq 2 |V(G)| - 4$. 
+}
+
+\section{Caracterizacion de grafos planares.}
+
+\ex{
+  Hemos probado que $K_5$ no es planar. Supongamos que $K_n$ fuera planar para algun $n \geq 5$ y consideremos una inmersion plana de el cualquiera. Entonces, eliminando vertices podemos llegar a $K_5$ como subgrafo (en particular, borrando $n - 5$ vertices). Luego, ese $K_5$ inducido tambien debe ser una inmersion plana, de otra manera el dibujo original no lo hubiera sido. Esto es absurdo pues $K_5$ no es planar, luego $K_n$ no es plano para $n \geq 5$.
+}
+
+\prop{
+  Si $G$ es un grafo planar, todo subgrafo de $G$ es planar.
+}
+
+\defn{Grafo por subdivision}{
+  Sea $G$ un grafo sin lazos y con al menos una arista. Diremos que un grafo $H$ se obtiene por subdivision de una arista $e = uv$ de $G$, si $H$ se obtiene a partir de $G$ borrando la arista $e$ y agregando un nuevo vertice $w$ conectandolo a $u$ y $v$.
+}
+
+\rmkb{
+  Si $G'$ se obtiene a partir de $G$ mediante la subdivision de una arista de $G$, entonces tenemos que
+  \[|V(G')| = |V(G)| + 1\]
+  \[|E(G')| = |E(G)| + 1\]
+}
+
+\defn{Grafos homeomorfos}{
+  Dos grafos $G_1$ y $G_2$ son homeomorfos si ambos se obtienen a partir de un mismo grafo sin lazos mediante una sucesion de subdivisiones de aristas.
+}
+
+\prop{
+  Un grafo $G$ es planar si y solo si todo grafo homeomorfo de $G$ es planar.
+}
+
+\thm{Teorema de Kuratowski}{
+  Un grafo $G$ es planar si y solo si no tiene ningun subgrafo que sea homeomorfo a $K_5$ o a $K_{3,3}$.
+}
+
+\section{Coloreo de grafos planares}
+
+\thm{Teorema de los 5 colores}{
+  Todo grafo planar es $5-$coloreable.
+}
+
+\thm{Teorema de los 4 colores}{
+  Todo grafo planar $4-$ coloreable.
+}
+
+\end{document}

@@ -1,0 +1,399 @@
+\documentclass[APUNTE_COMPLEMENTOS.tex]{subfiles}
+\begin{document}
+% ------------------------------------------------------------------------------
+
+% \chapter{Examples}
+
+% \section{Theorem System}
+
+% Theorem System
+% The following boxes are provided:
+%   Definition:     \defn 
+%   Theorem:        \thm 
+%   Lemma:          \lem
+%   Corollary:      \cor
+%   Proposition:    \prop   
+%   Claim:          \clm
+%   Fact:           \fact
+%   Proof:          \pf
+%   Example:        \ex
+%   Remark:         \rmk (sentence), \rmkb (block)
+% Suffix
+%   r:              Allow Theorem/Definition to be referenced, e.g. thmr
+%   p:              Add a short proof block for Lemma, Corollary, Proposition or Claim, e.g. lemp
+%                   For theorems, use \pf for proof blocks
+
+% --------------------------------------------------------------------------------
+
+\chapter{Introduccion a Teoria de Grafos}
+\section{Definiciones}
+
+\defn{Grafo}{
+    Un grafo $G$ es un par ordenado $G = (V(G), E(G))$ donde $V(G)$ es un conjunto de vertices y $E(G)$ un conjunto de aristas tal que $V(G) \cap E(G) = \emptyset$, junto con una funcion de incidencia $\phi_G$ que asigna a cada arista un par no ordenado de vertices, no necesariamente disjunto, de G.
+    Esto es,
+    \[\phi_G: E(G) \longrightarrow V(G) \times V(G)\]
+}
+
+\defn{Adyacencia}{
+    Dado $G = (V(G), E(G))$ y $\phi_G$ su funcion de incidencia, $e \in E(G)$ una arista y $u, v \in V(G)$, decimos que $e$ conecta a $u$ y $v$, que $u$ y $v$ son extremos de $e$, que son adyacentes, o que $e$ incide en los vertices $u$ y $v$ si $\phi_G (e) = {u, v} = uv$.
+}
+
+\defn{Tamaño y orden de un grafo}{
+    Dado $G = (V(G), E(G))$ un grafo, llamaremos
+    \begin{itemize}
+        \item Orden de $G$ a $\left\lvert V(G) \right\rvert = n = v(G)$
+        \item Tamaño de $G$ a  $\left\lvert E(G) \right\rvert = m = e(G)$
+    \end{itemize}
+}
+
+\defn{Vecindad de un vertice}{
+    Dado un grafo $G$ y un vertice $v \in V(G)$, definimos a la vecindad de V como el conjunto
+    \[N_G (v) = \{v \in V(G): vu \in E(G)\}\]
+}
+
+\defn{Vecindad cerrada de un vertice}{
+    Dado un grafo $G$ y un vertice $v \in V(G)$, definimos a la vecindad de V como el conjunto
+    \[N_G [v] = N_G (v) \cup \{v\} \]    
+}
+
+\defn{Grafo simple}{ Diremos que un grafo $G$ es simple si no posee bucles ni aristas paralelas. En tal caso, no sera necesario dar explicitamente la funcion de incidencia $\phi$, bastara con indicar como aristas a los pares $uv$.}
+
+\fact{
+    En un grafo simple, 
+    \[\left\lvert v \right\rvert = n \Longrightarrow 0 \leq \left\lvert E(G) \right\rvert \leq \binom{n}{2}\]
+}
+
+\rmkb{
+    \begin{itemize}
+        \item Los grafos pueden ser infinitos. Diremos que un grafo $G$ es finito sii $m$ y $n$ son finitos.
+        \item $(\emptyset, \emptyset)$ es el grafo nulo.
+        \item $(\{v\}, \emptyset)$ es el grafo trivial.
+    \end{itemize}
+}
+
+\section{Familias de grafos simples clasicos}
+
+\defn{Grafo completo}{
+    Dado $n \in \mathbb{N}$, definimos al grafo $K_n$ tal que
+    \[V(K_n ) = \{v_i : i \in [n]\}\]
+    \[E(K_n ) = \{v_i v_j : i, j \in [n], i \neq j\}\]
+    Tambien notaremos alternativamente a $E(K_n )$ como
+    \[E(K_n ) = \binom{V(K_n )}{2}\]
+}
+
+\defn{Grafo camino}{
+    Dado $n \in \mathbb{N}, n \geq 2$, definimos al grafo $P_n$ tal que
+    \[V(P_n ) = \{v_i : i \in [n]\}\]
+    \[E(P_n ) = \{v_i v_{i+1} : i, j \in [n - 1]\}\]
+}
+
+\defn{Grafo ciclo}{
+    Dado $n \in \mathbb{N}, n \geq 3$ definimos al grafo $C_n$ tal que
+    \[V(C_n ) = \{v_i : i \in [n]\}\]
+    \[E(C_n ) = \{v_i v_{i+1} : i, j \in [n - 1]\} \cup \{v_1 v_n\}\]
+}
+
+\defn{Grafo bipartito}{
+    Dado un grafo $G$ diremos que es bipartito si existe una biparticion $(X, Y)$ de $V(G)$ tal que $E(G) \subset X \times Y$.
+
+    Lo notaremos $G[X, Y]$
+}
+
+\ex{
+    \begin{itemize}
+        \item $P_n$ es bipartito.
+        \item $C_n$ es bipartito $\Longleftrightarrow$ $n$ es par.
+    \end{itemize}
+}
+
+\defn{Familia de grafos bipartitos}{
+    Dados $n,m \in \mathbb{N}$, definimos al grafo $K_{n,m}$ bipartito completo tal queriamos
+    \[V(K_{n, m}) = \{u_i : i \in [n]\} \cup \{u_i : i \in [m]\} = X \cup Y \]
+    \[E(K_{n, m}) = X \times Y\]
+}
+
+\rmkb{A los grafos $K_{1, m}$ los llamaremos grafos estrella.}
+
+\defn{Grafo conexo}{
+    Dado un grafo $G$, diremos que $G$ es conexo si para toda biparticion $(X, Y)$ de su conjunto de vertices (no vacia) existe una arista con un extremo en X y otro en Y. Esto es,
+    \[E(G) \cap (X \times Y) \neq \emptyset\]
+}
+
+\defn{Grado de un vertice}{
+    El grado de un vertice es la cantidad de aristas que inciden en el. Definiremos que un bucle suma dos unidades, y lo notaremos $d_G (v)$.
+}
+
+\fact{En un grafo simple,
+\[d_G (v) = \left\lvert N_G (v)\right\rvert \]
+}
+
+\defn{Grados maximos y minimos de un grafo}{
+    A los grados maximos y minimos de un grafo $G$ los notaremos
+    \[\delta_G = min\{d_G (v) : v \in V(G)\}\]
+    \[\Delta_G = max\{d_G (v) : v \in V(G)\}\]
+}
+
+\rmkb{
+    \begin{itemize}
+        \item Diremos que un vertice $v$ es aislado si $d_G (v) = 0$.
+        \item Por el contrario, diremos que es universal si $N_G [v] = V(G)$.
+    \end{itemize}
+}
+
+\thm{Sumatoria de los grados de un grafo}{
+    Sea $G$ un grafo con $m$ aristas. Entonces,
+    \[\sum_{v \in V(G)} d_G (v) = 2 \left\lvert E(G) \right\rvert = 2m\]
+}
+\pf{
+    Sigue de la definicion de grado de un vertice y del hecho de que cada arista aporta do unidades a la cantidad.
+}
+
+\clearpage
+\corp{
+Sea $G$ un grafo, entonces la cantidad de vertices de grado impar de $G$ es par.
+}{
+Sigue del teorema anterior. Veamos que
+\[2m = \sum_{v \in V(G)} d_G (v) = \sum_{\substack{v \in V(G) \\ d_G(v) impar}} d_G (v) + \sum_{\substack{v \in V(G) \\ d_G(v) par}} d_G (v)\]
+
+Donde sabemos que $2m$ es par y el segundo sumando tambien, luego el primero tambien debe ser par. Es decir, la suma de numeros impares es par, lo que implica que debe haber una cantidad par de vertices con grado impar.
+}
+
+\defn{Grafo $k-regular$}{
+    Diremos que un grafo $G$ es $k-regular$ si 
+    \[\exists{k\! \in \! \mathbb{N}} \; \; \forall{v \in V(G)}: \; d_G (v) = k\]
+}
+
+\ex{
+    El grafo de Petersen es $3-regular$.
+}
+
+\section{Otra forma de representar grafos}
+
+\defn{Matriz de incidencia de un grafo}{
+    Sea $G(V, E)$ un grafo. Definiremos a la matriz de incidencia de $G$ como la matriz $M_G \in \mathbb{N}^{n \times m}$ tal que 
+    \[M_G := (m_{ve})\]
+    donde $m_{ve}$ es el numero de veces que la arista $e$ incide en un vertice $u$.
+}
+
+\defn{Matriz de adyacencia de un grafo}{
+    Sea $G(V, E)$ un grafo. Definiremos a la matriz de adyacencia de $G$ como la matriz $A_G \in \mathbb{N}^{n \times n}$ tal que 
+    \[A_G := (a_{uv})\]
+    donde $m_{uv}$ es la cantidad de aristas que conectan a los vertices $u$ y $v$. Contaremos a los bucles como dos aristas.
+}
+
+% -------------------------------------------------------------------------
+
+\section{Isomorfismos de grafos}
+
+\defn{Isomorfismo}{
+    Dados $G, H$ grafos \textbf{simples}, decimos que una funcion 
+    \[\theta : V(G) \longrightarrow V(H)\]
+    es un isomorfismo si es biyectiva y preserva adyacencias, es decir, si se verifica que 
+    \[uv \in E(G) \iff \theta (u) \theta (v) \in E(H)\]
+
+    Si existe un isomorfismo, diremos que $G$ y $H$ son isomorfos, y notaremos
+    \[G \simeq H\]
+}
+
+\rmkb{
+    Si $G \simeq H$ entonces debera valer $\left\lvert E(G) \right\rvert = \left\lvert E(H) \right\rvert$ y
+    $\left\lvert V(G) \right\rvert = \left\lvert V(H) \right\rvert$, pero esto no es condicion suficiente.
+}
+
+\defn{Automorfismo}{
+    Un automorfismo es un isomorfismo de un grafo simple $G$ en si mismo, es decir, se trata de una permutacion de sus vertices que preserva adyacencias.
+}
+
+\defn{Vertices similares}{
+    Dado un grafo $G$ diremos que dos vertices $u, v \in V(G)$ son similares si existe un automorfismo $\theta$ tal que $\theta (u) = v$.
+}
+
+\defn{Grafo vertice-transitivo}{
+    Un grafo se dice vertice transitivo si todos sus vertices son similares.
+}
+
+\ex{
+    $K_n$, $C_n$, y $K_{n,n}$ son familias de grafos vertices transitivos. Tambien lo es el grafo de Petersen.
+}
+
+\defn{Grafo de interseccion}{
+    Dada una familia de conjuntos $\mathcal{F} = \{S_1, \dots, S_n\}$ el grafo de interseccion de $\mathcal{F}$ es el grafo cuyo conjunto de vertices es $\mathcal{F}$ y dos vertices $S_i$ y $S_j$ son adyacentes si y solo si $S_i \cap S_j \neq \emptyset$.
+
+    Es decir, es el grafo $I = (\mathcal{F}, E)$ tal que
+    \[E = \{XY: X \cap Y \neq \emptyset\}\]
+
+}
+
+\defn{Grafo de linea}{
+    Sea $G = (V, E)$ un grafo simple. Entonces, el grafo de linea de $G$, que notaremos $L(G)$, es el grafo de interseccion de la familia de conjuntos $E$.
+
+    Es decir, es el grafo que tiene por vertices a las aristas de $G$ (que son conjuntos de dos vertices) y dos vertices son adyacentes si y solo si su interseccion es no nula, esto es, si las aristas que estos vertices representan comparten algun vertice.
+}
+
+\defn{Grafos de intervalos}{
+    Si $X = \mathbb{R}$ y $\mathcal{F}$ es una familia de intervalos de la recta real, entonces el grafo de interseccion de $\mathcal{F}$ se denomina grafo de intervalo.
+}
+
+\rmkb{
+    No todos los grafos son grafos de interseccion o de intervalo. Por ejemplo, para $n \in \mathbb{N}, n \geq 4$ tenemos que $C_n$ no puede ser grafo de intervalo.
+}
+
+\section{Subgrafos y supergrafos}
+
+\defn{Eliminacion de aristas y vertices}{
+    Dados un grafo $G$, $e \in E(G)$, $v \in V(G)$, definimos al grafo $G \ e$ como el grafo obtenido borrando la artista $e$ de $G$.
+
+    Analogamente, definimos al grafo $G - v$ como el que se obtiene de eliminar el vertice $v$ y todas las aristas que inciden en el.
+}
+
+\defn{Subgrafo}{
+    Dado $G$ un grafo, decimos que un grafo $H$ es un subgrafo de $G$ si $H$ puede ser obtenido de $G$ aplicando borrado de vertices y/o aristas. En tal caso, notaremos $H \subset G$.
+}
+
+\defn{Subgrafo inducido}{
+    Un subgrafo de $G$ se dice inducido si puede ser obtenido de $G$ borrando unicamente vertices.
+}
+
+\defn{Subgrafo inducido por un conjunto}{
+    Dado $G = (V, E)$ y $U \subset V$, definimos al subgrafo inducido por $U$, y lo notamos $G[U]$ al subgrafo obtenido de borrar los vertices $V - U$.
+}
+
+\defn{Grafo $H$-free o libre de $H$}{
+    Dados dos grafos $G$ y $H$, diremos que $G$ es $H-free$ o libre de $H$ si $H$ no es un subgrafo de $G$.
+}
+
+
+\rmkb{
+    Si un grafo $G$ es $C_{2n+1} - free$ es bipartito. Mas aun, vale el si y solo si, esto es, $G$ es $C_{2n+1} - free$ si y solo si G es bipartito.
+
+    Esto implica que la familia de grafos $C_{2n+1} - free$ es exactamente la familia de grafos bipartitos, se trata de una caracterizacion de los grafos bipartitos por subgrafos prohibidos.
+}
+
+\section{Parametros en grafos}
+
+\defn{Clique}{
+    Dado un grafo $G$, un conjunto $W \subset V(G)$ es una $clique$ si $G[W]$ es un grafo completo.
+}
+
+\defn{Estable}{
+    Dado un grafo $G$, un conjunto $S \subset V(G)$ es un estable o independiente si todos sus vertices son mutuamente no adyacentes. Esto es, si $E(G[S]) = \emptyset$.
+}
+
+\defn{Numero de clique}{
+    El numero de clique de un grafo $G$ es 
+\[\omega(G) = \max\{\left\lvert X \right\rvert \ : X \; es \; una \; clique\} \]    
+}
+
+\defn{Numero de estabilidad}{
+    El numero de estabilidad de un grafo $G$ es 
+\[\alpha(G) = \max\{\left\lvert X \right\rvert \ : X \; es \; un \; estable\} \]    
+}
+
+\defn{Numero de Ramsey}{
+    Dados $k, l \in \mathbb{N}$, el minimo $r \in \mathbb{N}$ que verifica que todo grafo con al menos $r$ vertices tiene una clique de tamaño $k$ o un estable de tamaño $l$ se denomina numero de Ramsey.
+}
+
+\section{Algunas operaciones con grafos}
+
+\defn{Grafo union disjunta}{
+    Dados dos grafos $G$ y $H$, definimos al grafo union disjunta de $G$ y $H$, y lo notamos $G + H \; (G \cup H)$, como
+    \[V(G + H) = V(G) \cup V(H)\]
+    \[E(G + H) = E(G) \cup E(H)\]
+}
+
+\defn{Grafo join}{
+    Dados dos grafos $G$ y $H$, definimos al grafo join de $G$ y $H$, y lo notamos $G \oplus H$, como
+    \[V(G \oplus H) = V(G) \cup V(H)\]
+    \[E(G \oplus H) = E(G) \cup E(H) \cup \{uv: u \in V(G), v \in V(H)\} \]    
+}
+
+\prop{
+    Sea $G$ un grafo tal que su grafo complemento $\overline{G}$ es no conexo. Luego, $\overline{G} = H_1 + H_2$ para algunos grafos $H_1 , H_2$ sin aristas entre ellos. Entonces,
+    \[\overline{\overline{G}} = G = \overline{H_1} \oplus \overline{H_2}\] 
+}
+
+\prop{
+    Todo grafo $G$ con $2$ o mas verticces verifica exactamente una de las siguientes condiciones:
+    \begin{enumerate}
+        \item $G$ es no conexo.
+        \item $\overline{G}$ es no conexo.
+        \item $G$ y $\overline{G}$ son conexos
+    \end{enumerate}
+}
+
+\rmkb{
+    La utilidad de la proposicion anterior recae en que cada una de las condiciones anteriores implica (respectivamente)
+    \begin{enumerate}
+        \item $G = G_1 + G_2$
+        \item $G = G_1 \oplus G_2$
+        \item $G$ es modular.        
+    \end{enumerate}
+
+    Esto nos permite hacer una descomposicion modular de cualquier grafo.
+}
+
+\fact{
+    \begin{itemize}
+        \item $\omega (G + H) = \max\{\omega (G),\; \omega (H)\}$
+        \item $\alpha (G + H) = \alpha (G) + \alpha (H)$
+        \item $\omega (G \oplus H) = \omega (G) + \omega (H)$
+        \item $\alpha (G \oplus H) = \max\{\alpha (G),\; \alpha (H) \}$
+    \end{itemize}
+}
+
+\defn{Cografo}{
+    Un grafo es un cografo si es $P_4 - free$.
+}
+\ex {$K_n$ y $K_{n, m}$ son cografos. Tambien lo son $C_3$ y $C_4$ pero no lo son $C_n$ para ningun $n \geq 5$.}
+
+\prop{
+    $G$ es cografo $\iff$ todos sus grafos modulares son triviales.
+}
+
+\defn{Producto cartesiano entre grafos}{
+    Dados dos grafos $G$ y $H$, el producto cartesiano entre $G$ y $H$ es el grafo, que notaremos $G \Box H$, definido por
+
+    \[V(G \Box H) = V(G) \times V(H)\]
+    \[E(G \Box H) = \{(g, h)(g', h') : g = g' \land \; hh' \in E(H) \lor h = h' \land gg' \in E(G)\} \]
+}
+
+\rmkb{
+    \begin{enumerate}
+        \item El producto cartsiano de grafos es conmutativo (son isomorfos).
+        \item En general, observamos que el grafo inducido por un conjunto de la forma $\{g\} \times V(H)$ es isomorfo a $H$, y los denominamos $H-fibrados$.
+        \item Analogamente, el grafo inducido por un conjunto de la forma $V(G) \times \{h\}$ es isomorfo a $G$ y se denomina $G-fibrado$.
+    \end{enumerate}
+}
+
+\propp{
+    \[\omega (G \Box H) = \max\{\omega (G), \; \omega(H)\}\]
+}{
+Como $G \Box H$ posee un subgrafo inducido isomorfo a $G$ (cada $G-fibrado$), entonces tenemos que $\omega (G) \leq \omega (G \Box H)$.
+
+Analogamente, se puede ver que $\omega (H) \leq \omega (G \Box H)$. 
+
+Luego, $\max\{\omega (G), \omega (H)\} \leq \omega (G \Box H)$.
+
+Supongamos ahora por el absurdo que $\omega (G \Box H) > \max\{\omega (G), \omega (H)\}$. Tal clique maxima, que llamaremos $W$, no puede estar contenida en un $G-fibrado$ ni en un $H-fibrado$.
+
+En consecuencia, $W$ debe tener dos vertices de la forma $(g, h)$ y $(g', h')$ tales que $g \neq g'$ y $h \neq h'$. En ese caso, tales vertices no serian adyacentes, luego $W$ no es una clique, absurdo.
+\[\therefore \omega (G \Box H) = \max\{\omega (G), \; \omega(H)\}\]
+}
+
+
+\defn{Propiedad invariante via isomorfismo}{
+    Una propiedad $\mathcal{P}$ se dice $invariante \; via \; isomorfismo$ si para todo grafo $G$ que cumple la propiedad $\mathcal{P}$ se verifica que todo grafo $H$ isomorfo a $G$ verifica la propiedad.
+}
+
+\ex{
+    Algunas propiedades invariantes via isomorfismo son
+    \begin{itemize}
+        \item Tener $n$ vertices de grado $k$
+        \item Tener una arista $(u, w)$ donde $d(u) = i$ y $d(w) = j$.
+        \item Ser conexo
+        \item Ser bipartito
+    \end{itemize}
+}
+
+
+\end{document}

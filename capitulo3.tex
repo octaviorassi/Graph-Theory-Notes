@@ -1,0 +1,462 @@
+\documentclass[APUNTE_COMPLEMENTOS.tex]{subfiles}
+
+\begin{document}
+% ------------------------------------------------------------------------------
+
+% \chapter{Examples}
+
+% \section{Theorem System}
+
+% Theorem System
+% The following boxes are provided:
+%   Definition:     \defn 
+%   Theorem:        \thm 
+%   Lemma:          \lem
+%   Corollary:      \cor
+%   Proposition:    \prop   
+%   Claim:          \clm
+%   Fact:           \fact
+%   Proof:          \pf
+%   Example:        \ex
+%   Remark:         \rmk (sentence), \rmkb (block)
+% Suffix
+%   r:              Allow Theorem/Definition to be referenced, e.g. thmr
+%   p:              Add a short proof block for Lemma, Corollary, Proposition or Claim, e.g. lemp
+%                   For theorems, use \pf for proof blocks
+
+% --------------------------------------------------------------------------------
+
+
+\chapter{Arboles}
+\section{Definiciones y primeros resultados}
+
+\defn{Grafo aciclico}{
+    Un grafo es aciclico si no tiene ciclos.
+}
+
+\defn{Bosque, arbol, hoja}{
+    Dado  un grafo $G$ diremos que
+    \begin{itemize}
+        \item $G$ es un \textbf{bosque} si es aciclico.
+        \item $G$ es un \textbf{arbol} si es un bosque y es conexo.
+        \item Dado $v \in V(G)$, $G$ un arbol, diremos que $v$ es una \textbf{hoja} si es un vertice de grado uno.
+    \end{itemize}
+}
+
+\defn{Subgrafo recubridor (generador o de expansion)}{
+    Dado un grafo $G$, diremos que $H$ un subgrafo de $G$ es un \textbf{subgrafo recubridor} de $G$ si tiene los mismos vertices que $G$.
+}
+
+\defn{Arbol recubridor}{
+    Dado un grafo $G$, un \textbf{arbol recubridor} de $G$ es todo subgrafo recubridor de $G$ que es un arbol.
+}
+
+\ex{
+    Algunos ejemplos de arboles son:
+    \begin{itemize}
+        \item Un grafo con un unico vertice
+        \item El grafo completo de dos vertices, $K_2$
+        \item Los caminos $P_n$ para todo $n \in \mathbb{N}$.
+        \item Los grafos estrella $K_{1, m}$
+    \end{itemize}
+}
+
+\rmkb{
+    Por definicion un arbol no tiene ciclos, luego por caracterizacion de grafos bipartitos, todo arbol es bipartito.
+}
+
+\propp{
+    Todo arbol $T$ con al menos dos vertices tiene al menos dos hojas
+}{
+
+    Como $T$ tiene al menos dos vertices, tiene al menos una arista, pues de otra manera no seria conexo. Sea $P$ un camino simple maximal (y no trivial) en $T$.
+
+    Sean los extremos de $P$ los vertices $u, v \in V(G)$. Notemos que los extremos de $P$ no pueden ser adyacentes a otros vertices de $P$, pues formarian un ciclo. Ademas, como $P$ es maximal, los extremos de $P$ no pueden tener vecinos fuera de $P$ pues en ese caso, estos vecinos serian los nuevos extremos. Es decir, $u$ y $v$ no pueden tener mas vecinos fuera ni dentro de $P$.
+
+    $\therefore$ Como $u, v$ tienen una arista en $P$ y ninguna fuera de $P$, tienen grado 1. Es decir, los dos extremos de $P$ son hojas.    
+}
+
+\propp{    
+    Sea $T$ un arbol con al menos dos vertices y $v$ una hoja de $T$. Entonces, $T - v$ es un arbol.
+}{
+    
+    Comencemos observando que $T - v$ es aciclico ya que $T$ es aciclico. Ademas, si $u, v \in V(T) - \{v\}$, existe un $u,v-$camino simple $P$ en $T$.
+    
+    Este camino no usa el vertice $v$, ya que $d_T (v) = 1$ y los vertices del camino distintos de $u$ y $w$ tienen grado al menos 2. Luego, $P$ es un $u, w-$camino en $T - v$.
+
+    En consecuencia, $T - v$ es conexo.
+
+    $\therefore$ por aciclico y conexo, $T - v$ es un arbol.
+}
+
+\thm{
+    Definiciones equivalentes de arbol
+}{
+
+    Sea $G$ un grafo con $|V(G)| = n \geq 1$. Entonces, los siguientes enunciados son equivalentes:
+    \begin{center}
+    \begin{enumerate}
+        \item $G$ es conexo y aciclico.
+        \item $G$ es conexo y $|E(G)| = n - 1$.
+        \item $G$ es aciclico y $|E(G)| = n - 1$.
+    \end{enumerate}
+    \end{center}
+
+}
+
+\pf{ 
+    $\mathbf{1 \implies 2 \; y \; 3)}$ Probaremos la implicancia por  induccion sobre $n \in \mathbb{N}$.
+
+    Si $n = 1$ el resultado es trivial.
+
+    Supongamos ahora que $n \geq 2$ y que vale la implicancia para todo grafo con menos de $n$ vertices. Del lema anterior, tenemos que como $n \geq 2$ entonces $G$ tiene al menos dos hojas. Sea $v$ una hoja de $G$.
+
+    Ahora, considerando otro lema revio, tenemos que $G - v$ es aciclico y conexo. Notemos entonces que $G - v$ es un grafo aciclico, conexo, y tal que $\Big|V(G)\Big| = n - 1$. Luego, por H.I. tenemos que $\Big|E(G - v)\Big| = \Big|V(G - v)\Big| - 1 = n - 2$.
+
+    Finalmente, al agregar nuevamente el vertice $v$ a $G - v$, es claro que    
+    \[\Big|V(G)\Big| = \Big|V(G - v)\Big| + 1 = n - 1 + 1 = n\]
+    \[\Big|E(G)\Big| = \Big|E(G - v)\Big| + 1 = n - 2 + 1 = n - 1\]
+    
+    Como queriamos probar.
+
+
+    $\mathbf{2 \implies 1 \; y \; 3)}$ Supongamos que borramos de $G$ una arista de cada ciclo sucesivamente hasta obtener un grafo $G'$ aciclico. Observemos que una arista de un ciclo no es de corte.
+
+    Luego, $G'$ es conexo y aciclico. Entonces, por lo probado anteriormente, 
+    \[\Big|E(G')\Big| = \Big|V(G')\Big| - 1 = \Big|V(G)\Big| - 1 = n - 1 = \Big|E(G)\Big|\]
+
+    Es decir, $G'$ tiene los mismos vertices y aristas que $G$. Por lo tanto, $G' = G$ luego $G$ es aciclico, como queriamos probar.
+
+    $\mathbf{3 \implies 1 \; y \; 2)}$ Sean $G_1 , \dots , G_{c(G)}$ (donde $c(G)$ es la cantidad de componentes conexas de $G$) las componentes conexas de $G$.
+
+    Cada componente conexa es en particular aciclica y conexa, entonces por lo probado anteriormente, 
+    \[\Big|E(G_i)\Big| = \Big|V(G_i)\Big| - 1\]
+
+    Por lo tanto, 
+    \[
+        n - 1 =
+        |E(G)| =
+        \sum_{i - 1}^{c(G)} \Big|E(G_i)\Big| =
+        \sum_{i - 1}^{c(G)} \Big(\Big|V(G_i)\Big| - 1 \Big) =
+        \Bigg(\sum_{i - 1}^{c(G)} \Big|V(G_i)\Big|\Bigg) - c(G) = n - c(G)
+    \]
+
+    Es decir, $c(G) = 1$, entonces $G$ es conexo.
+}
+
+
+\corp{
+    \begin{enumerate}
+        \item Toda arista de un arbol es de corte.
+        \item Agregar una arista a un arbol forma exactamente un ciclo en el arbol.
+        \item Todo grafo conexo tiene un arbol recubridor.
+    \end{enumerate}
+}{
+    \begin{enumerate}
+        \item Una arista es de corte si y solo si no pertenece a ningun ciclo. Luego, si existiera una arista de corte en un arbol, perteneceria a algun ciclo en el arbol, absurdo pues los arboles son aciclicos.
+        \item Por \textbf{(1 y 2)}, como al agregar una arista el grafo sigue siendo conexo pero ahora tiene $n$ aristas, necesariamente debe fallar la condicion de aciclico. Entonces, agregar una arista crea al menos un nuevo ciclo.  (\textbf{Obs.} Otra manera era considerar un $u, v$ camino en el arbol, cuya existencia viene dada por ser conexo. Luego, al agregar la arista $u,v$, junto con el camino forman un ciclo).
+        
+        La prueba de que es exactamente un ciclo sigue de la caracterizacion de arboles que implica que para cada par de vertices existe un unico camino simple en el arbol que los une. Luego, es claro que si hubiera dos ciclos, ambos usan la nueva arista pero la unica forma de crear un ciclo con esa arista es usar el unico camino simple, luego son el mismo ciclo.
+        \item Basta con partir del grafo conexo y eliminar sucesivamente las aristas que forman ciclos. De tal manera, $G$ se mantiene conexo y eventualmente sera aciclico, luego es un arbol y en particular un arbol recubridor del grafo original.
+    \end{enumerate}
+}
+
+\propp{
+
+    Sean $T$ y $T'$ dos arboles recubridores de un grafo $G$ y $e \in E(T) - E(T')$. 
+    
+    Entonces, existe $e' \in E(T') - E(T)$ tal que $(T \backslash e) \cup e'$ es un arbol recubridor de $G$.
+}{
+
+    Del corolario anterior, sabemos que toda arista de $T$ es de corte. Sean entonces $T_1$ y $T_2$ las dos componentes conexas de $T \backslash e$.
+
+    Como $T'$ es conexo, existe $e' \in E(T')$ con un extremo en $T_1$ y otro en $T_2$. Luego, $(T \backslash e) \cup e'$ es conexo y como no borramos ningun vertice, es recubridor. Mas aun, mantiene la cantidad de aristas, entonces tiene $n - 1$ aristas.
+
+    $\therefore$ $(T \backslash e) \cup e'$ es un arbol recubridor.
+}
+
+\propp{
+
+    Sean $T$ y $T'$ dos arboles recubridores de un grafo $G$ y $e \in E(T) - E(T')$.
+    
+    Entonces, existe una arista $e' \in E(T') - E(T)$ tal que $\big(T' \cup e\big) \; \backslash \; e'$ es un arbol recubridor de $G$.
+}{
+    Analoga a la proposicion anterior. Completar.
+}
+
+\propp{
+    Si $T$ es un arbol con $k$ aristas y $G$ es un grafo simple y no vacio tal que $\delta (G) \geq k$, entonces $T$ es subgrafo de $G$.
+}{
+    Por induccion sobre $k \in \mathbb{N}$:
+    \begin{itemize}
+        \item Si $k = 0$ entonces el resultado es directo ya que $K_1$ es subgrafo de $G$ pues es no vacio.
+        \item Sea $k \geq 1$ y supongamos que el resultado es valido para arboles con menos de $k$ aristas (H.I)
+        
+        Por los lemas previos tenemos que $T$ tiene al menos dos hojas, y en particular, al menos una hoja, que llamaremos $v$, y ademas $T' = T - v$ es un arbol.
+        
+        Sea $u$ el padre de $v$ en $T$. Como $\Big | E(T') \Big | = k - 1$ y $\delta (G) \geq k \geq k - 1$ por H.I. tenemos que $T$ es un subgrafo de $G$.
+        
+        Sea $x$ el vertice en $T'$ correspondiente a $u$. Como debe valer $d_G (x) \geq k$ y $T'$ tiene $k$ vertices, existe (por principio del palomar) un vecino $w$ de $x$ en $G$ que no pertenece a $T'$.
+        
+        Luego, agregando a $T'$ la arista $xw$ y el vertice $w$, tenemos a $T$ como subgrafo de $G$, como queriamos demostrar.
+    \end{itemize}
+}
+
+\rmkb{ Esta condicion es ajustada. Por ejemplo, no es posible reducir la condicion de grado minimo a $k - 1$ pues el completo $K_k$ verifica la condicion y no la conclusion.}
+
+
+\section{Busqueda en grafos}
+
+\defn{BFS (Busqueda a lo ancho)}{
+    \begin{itemize}
+        \item \underline{Entrada.} Un grafo conexo $G$ y $u \in V(G)$
+        \item \underline{Inicio.} $R = (u)$, $S = \emptyset$ y $d(u, u) = 0$.
+        \item \underline{Iteracion.} Mientras $R \neq \emptyset$ buscamos el primer vertice $v$ de $R$. Los vecinos que no estan en $S \cup R$ son agregados atras de $R$ y se les asigna la distancia $d(u, v) + 1$. 
+        Luego, $v$ es removido de $R$ y ubicado en $S$.
+    \end{itemize}
+}
+
+\defn{DFS (Busqueda a lo profundo)}{
+    \begin{itemize}
+        \item \underline{Entrada.} Un grafo conexo $G$ y $u \in V(G)$
+        \item \underline{Salida.} Un arbol recubridor de raiz $u$.
+        \item \underline{Inicio.} $R = (u)$, $T = (\{u\}, \emptyset)$
+        \item \underline{Iteracion.} Mientras $R \neq \emptyset$ buscamos el ultimo vertice $v$ de $R$. Si existe un vertice $w$ de $v$ que no este en $V(T) \cup R$, agregamos a $w$ atras de $R$ y actualizamos
+
+        \[V(T) \longleftarrow V(T) \cup \{w\} \]
+        \[E(T) \longleftarrow E(T) \cup \{vw\} \]
+
+        Si no existiera tal $w$, eliminamos a $v$ de $R$.
+    \end{itemize}
+}
+
+
+\section{Arboles recubridores de costo optimo (min/max)}
+
+\defn{
+    Grafo ponderado
+}{
+    Un grafo ponderado es un grafo con etiquetas numericas en sus aristas.
+}
+
+\defn{
+    Algoritmo de Kruskal (para minimos)
+}{
+    \begin{itemize}
+        \item \underline{Entrada}. Un grafo $G$ conexo ponderado.
+        \item \underline{Idea}. Mantener un subgrafo recubridor aciclico $H$ e ir agregando aristas de peso minimo.
+        \item \underline{Inicio}. $E(H) = \emptyset , V(H) = V(G)$.
+        \item \underline{Iteracion}. Mientras existan aristas que unan dos componentes conexas de $H$, agregar la de peso minimo (resp. maximo) a $E(H)$.
+        \item \underline{Salida}. $H$ es un arbol recubridor de peso minimo (resp. maximo).
+    \end{itemize}
+}
+
+\rmkb{
+    Si tenemos el algoritmo para construir el camino minimo, podemos hacer modificaciones para que, sin calcular maximos, podamos encontrar los caminos maximos.
+    \begin{itemize}
+        \item Una manera es reemplazar cada peso por su opuesto. Entonces, elegir el minimo implica tomar el maximo de los pesos originales. Finalmente, $w(H) = -w'(H)$ si $w'$ es la funcion que asigna a cada arista el opuesto de su peso, $w'(e) = -w(e)$.
+        \item Otra forma es considerar $\max\limits_{e \in E(G)} w(e) = M$, y definir la nueva funcion de costos $w'(e) = M - w(e)$. Entonces, tambien estaremos obteniendo el camino maximo, y se verifica que
+        \[w'(H) = \sum_{e \in E(H)} M - w(e) = M (n - 1) - w(H) \implies w(H) = M(n - 1) - w'(H)\]
+    \end{itemize}
+}
+
+\thm{
+    Verificacion del Algoritmo de Kruskal
+}{
+    Si $G$ es un grafo conexo ponderado, el algoritmo de Kruskal produce un arbol recubridor de peso minimo.
+}
+
+\pf{
+    Debemos probar que $H$, la salida del algoritmo, es un arbol, es recubridor, y es de peso minimo.
+
+    Observemos primero que $H$ es un arbol. Notemos que al agregar aristas entre diferentes componentes conexas, no es posible formar ciclos.
+
+    Ademas, $H$ es conexo, ya que si existieran dos o mas componentes conexas en $H$, entonces no existen aristas de $G$ entre sus componentes (pues de otra manera el algoritmo hubiera agregado alguna de ellas a $H$), luego $G$ no seria conexo, absurdo.
+
+    Luego, por ser aciclico y conexo, por definicion $H$ es un arbol. En particular, como definimos a $H$ inicialmente de manera que $V(G) = V(H)$, es un arbol recubridor.
+
+    Ahora, veamos que en efecto $H$ es de peso minimo. Consideremos $H'$ un arbol recubridor de $G$ de peso minimo cualquiera. Queremos probar que $w(H) \leq w(H')$.
+
+    Supongamos por el absurdo que $w(H) > w(H')$. Es claro que como $w(H) \neq w(H')$, y como por definicion $V(H) = V(H') = V(G)$, $H$ y $H'$ deberan difeir en sus aristas, esto es, $E(H) \neq E(H')$.
+
+    Notemos que como debe valer $\Big | E(H) \Big | = \Big | E(H') \Big |$, pero $E(H) \neq E(H')$, entonces debera existir una arista en $E(H)$ tal que no perteneza a $E(H')$ y viceversa, i.e., $E(H) - E(H') \neq \emptyset$
+
+    Sea entonces $e \in E(H) - E(H')$ la primer arista seleccionada por el algoritmo en ese conjunto. Es decir, es la primer arista que el algoritmo elige que pertenece a $H$ pero no a $H'$.
+
+    De la proposicion 4.1.9 tenemos que debe existir una arista $e' \in E(H') - E(H)$ tal que $H'' = \big ( H' \cup e \big ) \backslash e'$ es un arbol recubridor de $G$. 
+
+    Como $e'$ y todas las aristas seleccionadas por el algoritmo antes de $e$ pertencen a $H'$, tanto $e$ como $e'$ estan disponibles cuando el algoritmo selecciona a $e$ para $H$. Entonces, si eligio a $e$ es por que el peso de $e$ era a lo sumo el de $e'$. Luego,
+
+    \[w(e) \leq w(e') \implies w(H'') \leq w(H')\]
+
+    Por lo que $H''$ es arbol recubridor de $G$ y es de peso minimo. \textbf{(Ver obs. debajo)}
+    
+    Mas aun, $H''$ coincide con $H$ en una arista mas. Repitiendo este razonamiento y como H es finito, finalemente llegaremos a un grafo que es recubridor de $G$, es de peso minimo, y coincide en $H$ en todas sus aristas. Como los vertices no difieren, ese grafo es exactamente $H$, absurdo.
+
+
+
+
+
+}
+
+\rmkb{
+    Otra manera era definir a $H'$ de manera que sea de peso minimo y ademas coincida en el maximo de aristas posibles con $H$. Entonces al aplicar la proposicion 4.1.9 estariamos obteniendo un nuevo arbol que es de peso minimo y ademas coincide en una arista mas con $H$ que $H'$, absurdo.
+}
+
+\defn{
+    Algoritmo de Prim
+}{
+    Es otra version del algoritmo de Kruskal, pero manteniendo los grafos intermedios siempre conexos.
+
+    \begin{itemize}
+        \item \underline{Entrada.} Un grafo conexo ponderado.
+        \item \underline{Idea.} Mantener un subgrafo conexo $H$ e ir agregando vertices incidentes en aristas de peso minimo.
+        \item \underline{Inicio.} Elegir $v \in V(G)$, y definimos $V(H) = \{v\}, E(H) = \emptyset$.
+        \item \underline{Iteracion.} Mientras $V(H) \neq V(G)$, elegir la arista $e$ de menor peso entre el conjunto de aristas que tiene un extremo en $V(H)$ y otro en $V(G) - V(H)$. Si la arista elegida es $e = uw$ con $u \in V(H)$ y $w \in V(G) - V(H)$, actualizamos 
+        \[V(H) \longleftarrow V(H) \cup \{w\} \]
+        \[E(H) \longleftarrow E(H) \cup \{e\} \]
+    \end{itemize}
+}
+
+\defn{Algoritmo de Dijkstra}
+{
+    Sea $G$ un grafo, $w$ una funcion que asigna el peso a cada arista tal que $\forall{e \in E(G)} \; \; w(e) \geq 0$ y $d(u, v)$, la distancia de un vertice $u$ a otro $v$, la definimos como la suma de los pesos de las aristas.
+
+    Entonces, el Algoritmo de Dijkstra para la busqueda de la distancia minima de un vertice a los restantes sigue el siguiente formato:
+    \begin{itemize}
+        \item \underline{Entrada}. Un grafo ponderado con pesos no negativos y un vertice de inicio $u$. El peso de una arista $xy$ es $w(x, y)$ y si $xy \notin E(G)$ consideramos $w(x, y) = \infty$
+
+        \item \underline{Idea}. Considerar un conjunto $S$ de vertices para los cuales hallamos un camino minimo desde $u$, agrandando $S$ hasta incluir todos los vertices.
+
+        Tendremos entonces una distancia arbitraria, que notaremos $t(z)$, desde $u$ a $z \notin S$, hasta que la distancia minima sea hallada.
+
+        \item \underline{Inicio}. Sea $S = \{u\}$, $t(u) = 0$, $t(z) = w(u, z) \; \; \forall{z \neq u}$.
+        \item \underline{Iteracion}. Consideramos $v \notin S$ tal que
+        \[t(v) = \min\limits_{z \notin S} \; t(z)\]
+
+        Agregamos $v$ a $S$. Ahora exploramos las aristas desde $v$ y actualizamos las etiquetas $t(z)$ para $z$ vecino de $v$ y $z \notin S$
+        \[t(z) = \min \Big\{ t(z), \; t(v) + w(v, z)\Big\} \]
+
+        Continuamos la iteracion hasta que se verifique que $S = V(G)$ o hasta que $t(z) = \infty \; \; \forall{z \notin S}$.
+        
+        Finalmente, consideramos 
+        \[d(u, v) = t(v) \; \; \forall{v \in V(G)}\]
+
+    \end{itemize}
+}
+
+\thm{Correctitud del Algoritmo de Dijkstra}
+{
+    Dado un grafo $G$ y un vertice $v \in V(G)$, el Algoritmo de Dijkstra calcula \[d(v, z) \; \; \forall{z \in V(G)}\]
+}
+\pf{
+    Dado un grafo $G$ ponderado con pesos no negativos y un vértice $v \in V(G)$, entonces el algoritmo de Dijkstra calcula $d(u,v) \; \; \forall v \in V(G)$.
+
+    Veamos que se verifican las siguientes condiciones en cada iteracion del algoritmo:
+
+    \begin{enumerate}
+        \item Para $z \in S$, $t(z)=d(u,z)$.
+        \item Para $z \notin S$, $t(z)$ es la menor longitud de un $uz$ camino que llega a $z$ por una arista desde $S$.
+    \end{enumerate}
+
+    Hagamos inducción sobre $|S| = k$.
+
+    Si $k = 1$, tenemos que $S=\{u\}$, $d(u,u)=t(u)=0$, la minima longitud de un $uz$ camino desde $S=\{u\}$ es $t(u) = w(u,z)$.
+
+    Supongamos que valen $1$ y $2$ para $|S| = k$. Sea $v\notin S$ tal que:    
+    \[t(v)=\min_{z \notin S} {t(z)}\]
+
+    El algoritmo entonces selecciona $v$ y sea $S' = S \cup \{v\}$.
+    Veamos entonces que $S'$ verifica $1$ y $2$.
+
+    Primero veamos $1$: Si $z \in S'-\{v\}$, entonces por HI se tiene que $t(z)=d(u,z)$. Veamos ahora que $t(v) = d(u,v)$. Por HI, la longitud de un $uv$ camino mínimo que llega a $v$ con una arista desde $S$ es $t(v)$. Como todo $uz$ camino debe salir desde el conjunto $S$ y llegar a $v$, si para por un vértice $z\notin S$ con $z\ne v$, como $t(z)\ge t(v)$, entonces ese camino tendrá al menos la longitud del $uv$ camino que llega a $v$ por una arista que sale desde $S$. Por lo que $d(u,v)=t(v)$ y vale $1$ para $S'$.
+
+    Ahora veamos $2$: Sea $z\notin S'$, o sea que $z \notin S$ y $z \ne v$. Queremos probar que la actualización de etiqueta:  
+    \[t(z)=\min\{t(z),t(v)+w(v,z)\}\]    
+    es la minima longitud de un $uz$ camino que llega a $z$ directamente desde una arista que sale de $S'$.
+
+    Por HI la minima longitud de estos caminos que llegan a $z$ desde una arista de $S$ es $t(z)$. Como agregamos $v$ a $S$, y se actualiza la etiqueta a $\min\{t(z),t(v)+w(v,z)\}$ estamos considerando  también los $uz$ caminos que llegan a $z$ desde $v$. 
+
+    Observemos que la longitud minima de un $uz$ camino que llega a $z$ desde $v$ es $t(v) + w(v,z)$. Esto prueba $2$ para $S'$.
+
+    Por lo tanto vale los enunciados $1$ y $2$ para $S'$, por lo que valen para toda iteracion del algoritmo.
+}
+
+
+\rmkb{
+    \begin{itemize}
+        \item Dijkstra sigue funcionando en el caso de digrafos.
+        \item Si la funcion $w$ admite pesos negativos, el algoritmo no es correcto como lo definimos. En tal caso podemos considerar un algoritmo alternativo similar al de Dijkstra, el algoritmo de \textbf{Ford-Bellman}.
+        \item Si consideramos una funcion de pesos constante $w(e) = k \in \mathbb{N}_0 \; \; \forall{e \in E}$, el algoritmo de Dijkstra encuentra la distancia. Es decir, funciona como el algoritmo de Kruskal.
+    \end{itemize}
+}
+
+
+\section{Arboles binarios}
+
+\defn{Arbol binario}{
+    Un arbol enraizado es binario si todo vertice tiene a lo sumo dos hijos. Si ademas verifica que todo vertice tiene exactamente $0$ o $2$ hijos, diremos que es un arbol binario completo.
+}
+
+\propp{
+    Si $T$ es un arbol binario con $i$ vertices internos entonces $T$ tiene a lo sumo $i + 1$ hojas.
+}{
+
+    Sea $l$ la cantidad de hojas.
+
+    La cantidad de hijos que tienen un padre, i.e. que son hijos de algun vertice, es $l + (i - 1)$, es decir, todas las hojas y todos los vertices internos.
+
+    La cantidad de vertices que tienen hijos es $i$, todos los vertices excepto las hojas. Como la cantidad de hijos para cada vertice es \textit{a lo sumo 2}, existen a lo sumo $2i$ vertices que son hijos.
+
+    Luego, usando esta cota sobre lo antes calculado, sabemos que
+    \[l + i - 1 \leq 2 i\]
+    \[l \leq i + 1\]
+
+    Como queriamos probar.
+}
+
+\corp{
+    Si T es un arbol binario completo con $i$ vertices internos y $l$ hojas, entonces
+    \[l = i + 1\]
+}
+{
+    Sigue de considerar $\leq$ por $=$ en la demostracion anterior.
+}
+
+\ex{
+
+    Si expresamos a un torneo como un arbol binario, tenemos que cada hoja es un equipo y cada vertice interno representa un partido jugado. 
+    
+    Luego, si tenemos $i$ partidos (vertices internos) entonces habra a lo sumo $i + 1$ partidos (hojas). Mas aun, el arbol deberia ser completo, luego sabemos que habra exactamente $i + 1$ partidos.
+}
+
+
+\propp{
+    Si $T$ es un arbol de altura $h$ con $l$ hojas, entonces
+    \[l \leq 2^h \]
+}{
+    Por induccion sobre $h$,
+    \begin{itemize}
+        \item Si $h = 0$ entonces $l = 1$ luego vale la tesis.
+        \item Sea $h \geq 1$ y supongamos que el resultado es valido para todo arbol de altura menor a $h$.
+
+        Sea $r$ la raiz el arbol. Si la raiz tiene un unico hijo, al borrar la raiz y enraizar el arbol en el hijo de $r$ entonces el nuevo arbol tiene la misma cantidad de hojas que $T$ y altura $h - 1$. Luego, por H.I. tenemos 
+        \[l \; \leq \; 2^{h - 1} \; \leq 2^h\]
+
+        Si la raiz tiene dos hijos, entonces si consideramos los subarboles $T_1$ y $T_2$ obtenidos de eliminar la raiz y enraizarlos en cada hijo respectivamente, tenemos que la altura de $T_1$ y $T_2$ es a lo sumo $h - 1$ para cada uno (obs. al menos uno verifica que su altura es exactamente $h - 1$, el otro puede verificarlo o no).
+
+        Luego, la cantidad de hojas del arbol original es la suma de las hojas de $T_1$ y $T_2$. Por H.I. es claro que si $l_1$ y $l_2$ es la cantidad de hojas de cada uno respectivamente, entonces
+        \[l_1 \; \leq \; 2^{h - 1}\]
+        \[l_2 \; \leq \; 2^{h - 1}\]
+        \[l = l_1 + l_2 \leq 2 \; . \; 2^{h - 1} = 2^h\]
+        Como queriamos probar.
+    \end{itemize}
+}
+
+\begin{comment}
+\ex{
+    Los codigos de Huffman son una manera de representar strings en binario con arboles. A los caracteres mas frecuentes se le asigna representaciones en binario mas cortas. Esto lo representa en Arboles.
+}
+\end{comment}
+
+\end{document}

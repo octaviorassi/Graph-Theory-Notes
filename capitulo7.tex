@@ -1,0 +1,149 @@
+\documentclass[APUNTE_COMPLEMENTOS.tex]{subfiles}
+
+\begin{document}
+
+% ------------------------------------------------------------------------------
+
+% \chapter{Examples}
+
+% \section{Theorem System}
+
+% Theorem System
+% The following boxes are provided:
+%   Definition:     \defn 
+%   Theorem:        \thm 
+%   Lemma:          \lem
+%   Corollary:      \cor
+%   Proposition:    \prop   
+%   Claim:          \clm
+%   Fact:           \fact
+%   Proof:          \pf
+%   Example:        \ex
+%   Remark:         \rmk (sentence), \rmkb (block)
+% Suffix
+%   r:              Allow Theorem/Definition to be referenced, e.g. thmr
+%   p:              Add a short proof block for Lemma, Corollary, Proposition or Claim, e.g. lemp
+%                   For theorems, use \pf for proof blocks
+
+% --------------------------------------------------------------------------------
+
+\chapter{Flujo}
+
+\section{Definiciones}
+
+\defn{Red, capacidad}{
+  Una red es un grafo dirigido simple ponderado que tiene un vertice distinguido $a$ con $d^a-(a) = 0$, que llamaremos origen o fuente, y un vertice distinguido $z$ con $d^+(z) = 0$, que llaraemos destino o sumidero, y tal que los pesos de las aristas son no negativos.
+
+  Al peso de una arista $e = uv$ lo llamaremos capacidad de la arista $e$ y lo notaremos por $c(e)$ o $c(u, v)$.
+}
+
+\defn{Flujo}{
+  Dada una red $G$, un flujo en $G$ es una funcion $f: E(G) \longrightarrow \mathbb{R}_0^+$. Dado un flujo $f$ en una red $G$ y $v \in V(G)$, denotaremos por $f^-(v)$ y $f^+(v)$ al flujo entrante a $v$ y saliente desde $v$ respectivamente. Es decir,
+  \[f^-(v) = \sum_{u \in V(G)} f(u, v)\]
+  \[f^+(v) = \sum_{u \in V(G)} f(v, u)\]
+  donde $f(x, y) = 0$ si $xy \notin E(G)$.
+
+  Diremos que $f$ es un flujo factible si para cada arista $e$ se verifica que
+  \[0 \leq f(e) \leq c\]
+  y para cada vertice $v \in V(G) \backslash \{a, z\}$ se verifica que
+  \[f^+(v) = f^-(v)\]
+  Esta ultima propiedad la llamamos conservacion del flujo.
+}
+
+\defn{Valor del flujo}{
+  Dado un flujo $f$ en una red $G$, definimos al valor del flujo $f$, que denotaremos $val(f)$, como el numero $f^+(a)$. Un flujo maximo es un flujo factible de valor maximo.
+}
+
+\prop{
+  Si $G$ es una red y $f$ un flujo factible de $G$, entonces $f^+(a) = f^-(z)$.
+}
+
+\section{Algoritmo de flujo maximo}
+
+\defn{Aristas propiamente orientadas}{
+  Dada una red $G$ y $u, v \in V(G)$, diremos que $uv \in E(G)$ es una arista propiamente orientada, o simplemente propia. Diremos que $uv$ es una arista impropiamente orientada, o simplemente impropia, si $vu \in E(G)$.
+}
+
+\defn{Camino $f-$aumentante.}{
+  Si $f$ es un flujo factible en una red $G$, un camino $f-$aumentante es un $a,z-$camino $P$ en el grafo subyacente (es decir, ignorando las direcciones de las aristas) tal que para cada arista $e = uv$ del camino $P$, se tiene que el flujo en la arista respeta la capacidad si es una arista propia (es decir, $f(e) < c(e)$) y es no nulo si es una arista impropia (es decir, $f(e) > 0$, pues $codom(f) = \mathbb{R}_0^+$)
+}
+
+\prop{
+  Si $f$ es un flujo factible en una red $G$ y $P$ es un camin $f-$aumentante con tolerancia $\Delta$, entonces la funcion
+  \[f': E(G) \longrightarrow \mathbb{R}_0^+\]
+  dada por
+  \[f'(uv) = \begin{cases}
+    f(uv) + \Delta & \text{si $uv$ es una arista propia en $P$} \\
+    f(uv) - \Delta & \text{si $uv$ es una arista impropia en $P$} \\
+    f(uv) & \text{en otro caso}
+  \end{cases}\]
+  es un flujo factible de $G$ con $val(f') = val(f) + \Delta$.
+}
+
+\defn{Algoritmo de Ford-Fulkerson}{
+  \begin{itemize}
+    \item \underline{Idea.} Iniciar con un flujo factible (podria ser $f(e) = 0 \; \forall e \in E(G)$). Buscamos un camino $f-aumentante$ y aumentamos el flujo en $\Delta$ unidades. Repetimos hasta que no haya caminos $f-aumentantes$. 
+    
+    A lo largo de la ejecucion del algoritmo iremos etiquetando cada vertice $u$ con etiquetas de la forma $(x, \alpha)$, donde diremos que $x$ es predecesor de $u$ y $\alpha = \epsilon(u)$.
+
+    \item \underline{Entrada.} $G$ una red con fuente $a$, sumidero $z$, capacidades $c(e)$ para cada $e \in E(G)$.
+    \item \underline{Salida.} Un flujo maximo para $G$.
+    \item \underline{Inicializacion.} Consideramos un flujo factible $f$ de $G$, que podria ser nulo.
+    \item \underline{Iteracion.}
+    \subitem \textbf{Paso 1.} Etiquetar $a$ con $(-, \inf)$, y $U = \{a\}$.
+    \subitem \textbf{Paso 2.} Mientras $z$ no fue etiquetado,
+    Si $U = \emptyset$, entonces el algoritmo termina. Si no, elijo $v \in U$.
+    
+    Para todo vertice $x$ no etiquetado aun tal que $vx \in E(G)$, si $f(vx) < c(vx)$, entonces agrego $x$ a $U$ y lo etiqueto con 
+    \[(v, \; \min\{val(v), \; c(vx) - f(vx)\})  \]
+
+    Para todo vertice $x$ no etiquetado aun tal que $xv \in E(G)$, si $f(xv) > 0$ entonces agrego $x$ a $U$ y lo etiqueto con
+    \[(v, \; \min\{val(v), \; f(vx)\})  \]
+
+    A continuacion, borramos a $v$ de $U$.
+
+    \subitem \textbf{Paso 3.} Si $z$ esta etiquetado, sea $\Delta = val(z)$. Construyo un $a, z-$camino $P$ de ``atras hacia adelante'' de la siguiente manera: $w_0 = z$ y para $i > 0$, definimos a $w_i$ como el predecesor de $w_{i-1}$, hasta llegar a $w_k = a$. De esta manera, $w_k , w_{k-1}, \dots, w_0$ es un $a,z-$camino. Para cada arista $e = w_i w_{i-1}$ de $P$, actualizamos el flujo $f$.
+
+    Si $e$ es una arista propia, $f(e) \longleftarrow f(e) + \Delta$, y si $e$ es una arista impropia, $f(e) \longleftarrow f(e) - \Delta$.
+
+    A continuacion, borramos todas las etiquetas y volvemos al paso 1.
+  \end{itemize}
+}
+
+\section{Flujos maximos y cortes minimos}
+
+\defn{Corte}{En una red $G$ con una fuente $a$ y sumidero $z$, un $corte$ $(S, T)$ consiste en el conjunto de aristas
+
+\[\{uv \in E(G): u \in S, \; v \in T\}\]
+donde $S$ y $T$ son conjuntos de vertices que forman una particion de $V(G)$ tales que $a \in S$, $z \in T$.
+
+La capacidad del corte $(S, T)$, que denotaremos $cap(S, T)$, es la suma de las capacidades de las aristas en el corte. Un corte minimo es un corte con capacidad minima.
+
+}
+
+\rmkb{
+  Notemos que una red es un grafo dirigido, luego un corte $(S, T)$ tiene solamente aquellas aristas que van desde un vertice $u \in S$ hacia un vertice $v \in T$ (no tiene por que cubrir todas las aristas, solo particiona los vertices).
+
+  Ademas, si $(S, T)$ es un corte, entonces $T = \overline{S}$, ya que son una particion. Luego, al referirnos a un corte, basta con indicar el conjunto $S$, y a veces notaremos directamente $(S, \overline{S})$.
+}
+
+\prop{
+  Sea $f$ un flujo factible en una red $G$, y sea $(S, \overline{S})$ un corte de $G$. Entonces, 
+  \[val(f \leq cap(S, \overline(S)))\]
+}
+
+\cor{
+  Sea $G$ una red. Si $f$ es un flujo y $(S, \overline{S})$ un corte de $G$ tales que $val(f) = cap(S, \overline{S})$, entonces $f$ es un flujo maximo, $(S, \overline{S})$ es un corte minimo.
+
+  Mas aun, la igualdad $val(f) = cap(S, \overline{S})$ vale si y solo si para toda arista $uv$ con $u \in S$, $v \notin S$, $f(u, v) = c(u, v)$ y para toda arista $uv$ con $u \notin S$ y $v \in S$, $f(u, v) = 0$.
+}
+
+\thm{}{
+  En toda red, el valor de un flujo maximo es igual a la capacidad de un corte minimo.
+}
+
+\cor{
+  Si todas las capacidades en una red son numeros naturales, entonces existe un flujo maximo que le asigna un flujo entero a cada arista.
+}
+
+\end{document}

@@ -1,0 +1,322 @@
+\documentclass[APUNTE_COMPLEMENTOS.tex]{subfiles}
+
+\begin{document}
+% ------------------------------------------------------------------------------
+
+% \chapter{Examples}
+
+% \section{Theorem System}
+
+% Theorem System
+% The following boxes are provided:
+%   Definition:     \defn 
+%   Theorem:        \thm 
+%   Lemma:          \lem
+%   Corollary:      \cor
+%   Proposition:    \prop   
+%   Claim:          \clm
+%   Fact:           \fact
+%   Proof:          \pf
+%   Example:        \ex
+%   Remark:         \rmk (sentence), \rmkb (block)
+% Suffix
+%   r:              Allow Theorem/Definition to be referenced, e.g. thmr
+%   p:              Add a short proof block for Lemma, Corollary, Proposition or Claim, e.g. lemp
+%                   For theorems, use \pf for proof blocks
+
+% --------------------------------------------------------------------------------
+
+\chapter{Coloreo}
+
+\section{Definiciones y primeros resultados}
+
+
+\defn{k-coloreo}{
+  Un $k-coloreo$ de un grafo $G$ es una funcion
+  \[f: V(G) \longrightarrow \{1, \dots, k\}\]
+  tal que
+  \[f(u) = f(v) = i \Longrightarrow uv \notin E(G)\]
+}
+
+\defn{Numero cromatico}{
+  Definimos a $\chi (G)$ el numero cromatico de un grafo $G$ como 
+  \[ \chi (G) = \min\{k: G \; admite \; un \; k-coloreo\} \]
+}
+
+\defn{Grafo color-critico}{
+  Un grafo $G$ se dice $k-$color critico si $\chi(G) = k$ y para todo $G' \subseteq G$, $\chi(G') < \chi(G)$.
+  Equivalentemente, $G$ es $k-$color critico si $\chi(G) = k$ y $\chi(G - v) < k$ para todo $v \in V(G)$.
+}
+
+\fact{
+  \begin{itemize}
+    \item $\chi (K_n ) = n$
+    \item $\chi (P_n ) = 2, (n \geq 2)$
+    \item Si $T$ es un arbol 2 o mas vertices, $\chi (T) = 2$
+    \item $G$ es bipartito $\iff \chi (G) \leq 2$
+    \item $\chi (C_n ) = 2$ si $n$ es par y $\chi (C_n ) = 3$ si $n$ es impar.
+    \item $\chi (W_n ) = \chi(C_n ) + 1$
+    \item Si $G_P$ es el grafo de Petersen, $\chi (G_P ) = 3$
+    \item Si $G$ es $k-critico$, $\delta (G) \geq k - 1$ 
+  \end{itemize}
+}
+
+\rmkb{
+  Dado un grafo, siempre existe un coloreo tal que el grafo verifica la condicion de que cada vertice se le asigne un color distinto. Para un grafo de $n$ vertices, basta con tomar $n$ colores distintos.
+}
+
+\fact{
+  Sean $n = | V(G) |$, $m + |E(G)|$, $\alpha (G)$ el numero de estabilidad y $\omega (G)$ el numero de clique. Entonces, algunas cotas para el numero cromatico son:
+  \begin{itemize}
+    \item $\omega (G) \leq \chi (G) \leq n$
+    \item $\chi (G) \alpha (G) \geq n$
+    \item $\chi (G) \chi (\overline{G}) \geq n$
+    \item $\chi (G) (n - \delta (G)) \geq n$
+    \item $\chi (G) \leq n + 1 - \alpha(G)$
+    \item $\chi (G) + \chi(\overline{G}) \leq 1 + n$
+    \item $\chi(G) \leq \frac{1}{2} + \sqrt{2m + \frac{1}{4}}$
+    \item $\chi (G) \leq 1 + \max\{\delta (G'): G' \subseteq G\}$
+  \end{itemize}
+}
+
+\pf{
+  \[\omega (G) \leq \chi (G) \leq n \]
+  Consideremos $G$ simple. Sea $f$ un coloreo optimo de $G$, es decir, es un $\chi (G) - coloreo$. Observemos que si $W$ es una clique maxima de $G$, entonces $f(v) \neq f(u)$ para cada par de vertices $u, v \in W$. Luego, $\chi (G) \geq |W|$. Luego, $\chi (G) \geq |W| = \omega (G)$.
+  Por otro lado, si $V(G) = \{v_1 , \dots , v_n\}$, como la funcion $f(v_i ) = i, \forall i \in [n]$ es un coloreo de $G$, entonces $\chi (G) \geq n$
+
+
+  \[\chi (G) \alpha (G) \geq n\]
+  Sea $f$ un coloreo optimo de $G$. Consideremos $V_i = f^{-1}(\{i\}), i \in [\chi (G)]$ (clases de color). Observemos que $\bigcup^{\chi(G)}_{i = 1} V_i = V(G)$ y $V_i \cap V_j = \emptyset$ para todo $i \neq j$. Es decir, la union es una particion de $G$.
+  
+  Por otro lado, observemos que dos vertices de una misma clase de color no osn adyacentes. Ergo, cada $V_i$ es un conjunto estable. Entonces, $|V_i | \leq \alpha (G), \forall i \in [\chi (G)]$. Luego,
+  \[n = |V(G)| =  | \bigcup^{\chi(G)}_{i = 1} V_i | = \sum^{\chi(G)}_{i = 1} |V_i | \leq \sum^{\chi(G)}_{i = 1} \alpha(G) = \chi(G) \alpha(G) \geq n\]
+
+  Como queriamos probar.
+
+
+  \[\chi (G) \chi (\overline{G}) \geq n\]
+
+  Por lo anterior sabemos que $\chi (\overline{G}) \geq \omega (\overline{G})$. Pero hemos visto que $\omega (\overline{G}) = \alpha (G)$. Luego,
+  $\chi (G) \chi (\overline{G}) \geq \chi(G) \omega (\overline{G}) = \chi(G) \alpha(G) \geq n$
+
+  Veamos ahora la cuarta propiedad,
+
+  \[\chi (G) (n - \delta (G)) \geq n\]
+  Sea $I$ un estable maximo de $G$ y $v \in I$. Luego, $I \subseteq V(G) - N(v)$ y en consecuencia $\alpha (G) = |I| \leq n - |N(v)| = n - gr(v) \leq n - \delta (G)$. Ergo, $\chi (G) (n - \delta(G)) \geq \chi(G) \alpha (G) \geq n$, como queriamos probar.
+
+
+  \[\chi (G) \leq n + 1 - \alpha(G)\]
+  Sea $I = \{v_1 , \dots, v_{\alpha(G)}\}$ un estable maximo de $G$. Notemos $V(G) = \{v_1 , \dots, v_n \}$ y consideremos 
+  \[f: V(G) \longrightarrow {1, \dots, n + 1 - \alpha(G)}\]
+  tal que $f(v) = 1$ si $i = 1, \dots, \alpha(G)$ y $f(v_i ) = 1 + i - \alpha(G)$ si $i = \alpha(G) + 1, \dots, n$
+  Luego, los unicos vertices que reciben el mismo color son los vertices de $I$, que son un estable. En consecuencia, $f$ es un coloreo de $G$ y por lo tanto $\chi(G) \leq n + 1 - \alpha(G)$
+}
+
+
+\thm{Numero cromatico monotono no decreciente por subgrafos inducidos}{
+  Sea $G'$ un subgrafo (inducido o no) de un grafo $G$ ($G' \subseteq G$). Entonces, $\chi(G') \leq \chi(G)$.
+}
+\pf{
+  Consideremos $f$ un coloreo optimo (minimo) de $G$ y $f'$ la restriccion de $f$ a $V(G')$. Observemos que la funcion $f'$ es un coloreo de $G'$, ya que para todo $u, v \in V(G')$ se verifica
+  \[f'(u) = f'(v) \Longrightarrow f(u) = f(v) \Longrightarrow uv \notin E(G) \Longrightarrow uv \notin E(G')\]
+  Como $f$ usa $\chi(G)$ colores, $f'$ utiliza a lo sumo $\chi(G)$ colores y por lo tanto
+
+  \[\chi(G') \leq \chi(G)\]
+}
+
+\thm{}{
+  Para todo grafo $G$ de orden $n$ se verifica
+  \[\chi(G) \leq \left\lfloor \frac{n + \omega(G)}{2} \right\rfloor \]
+}
+\pf{
+  Por induccion sobre $n - \omega(G)$.
+  \begin{itemize}
+    \item Si $n - \omega(G) = 0$, entonces $G \approx K_n $
+    \item Sea $k \geq 1$ y supongamos que el resultado es cierto para todo grafo $H$ de orden $n'$ tal que $n' - \omega(H) < k$.
+    Si $k = 1$, $\chi (G) = n - 1 = \omega(G) \leq \left\lfloor \frac{n + \omega(G)}{2} \right\rfloor$
+    \item Sea $k = n - \omega (G) \geq 2$. Sean $u$ y $v$ dos vertices no adyacentes en $G$. Consideremos $H = G - \{u, v\}$. Luego, si $f_H$ es un coloreo optimo de $H$, entonces 
+    \[f_G : V(G) \longrightarrow \{1, \dots, \chi(H) + 1\}\]
+    con $f_G |_H = f_H$ y $f_G (u) = f_G (v) = \chi(H) + 1$ es un coloreo de $G$. En consecuencia, $\chi (G) \leq \chi(H) + 1$.
+    Ademas, si $W$ es una clique maxima de $G$, como $\{u, v\} \nsubseteq W$, entonces $W - \{u, v\}$ es una clique de $H$ de tamaño al menos $|W| - 1$ (a lo sumo perdio un vertice de la clique, pues no pueden haber estado tanto $u$ como $v$ en $W$ porque no son adyacentes).
+
+    Es decir, $\omega(G) - 1 \leq \omega(H) \leq \omega(G)$. Por lo tanto,
+    \[|V(H)| - \omega(W) = (n - 2) - \omega(H) \leq (n - 2) - (\omega(G) - 1) = n - \omega(G) - 1 = k - 1 < k\]
+
+    \[\chi(G) \leq \chi(H) + 1 \leq \left\lfloor \frac{n - 2 + \omega(H)}{2} \right\rfloor + 1 = \left\lfloor \frac{n + \omega(H)}{2} \right\rfloor \leq \left\lfloor \frac{n + \omega(G)}{2} \right\rfloor  \]
+  \end{itemize}
+}
+
+
+\defn{
+  Algoritmo Greedy para el Coloreo
+}{
+  Dado un grafo $G$ y un orden de sus vertices $v_1 , v_2 , \dots, v_n$, el algoritmo greedy colorea los vertices den el orden dado asignando a $v_i$ el menor color aun no utilizado en sus vertices vecinos de menor indice.
+}
+
+\prop{
+  Notemos que en cada iteracion el color que se le asigna a un vertice es a lo sumo uno mas que su cantidad de vecinos. Luego, aplicando el algoritmo greedy tenemos una cota
+  \[\chi (G) \leq 1 + \Delta (G)\]
+
+  Como podemos aplicar el algoritmo a cualquier grafo, esto constituye una cota superior para el numero cromatico de cualquier grafo.
+}
+
+\prop{
+  Si $G$ tiene la secuencia de grados $d_1 \geq d_2 \geq, \dots, \geq d_n$ entonces en cada iteracion el color que se le asigna al vertice $v_i$ es a lo sumo $d_i + 1$ y tambien es a lo sumo $i$ (hay $i - 1$ ya coloreados). Entonces,
+  \[ \chi (G) \leq 1 + \max\limits_{1 \leq i \leq n}\{\min\{d_i , i - 1\}\} \]
+
+  Es decir, si ordenamos los vertices acorde al orden de los grados, esta es la mejor cota que podemos obtener por este algoritmo.
+}
+
+
+\rmkb{
+  Dado un grafo, siempre es posible dar un orden de sus vertices tal que el algoritmo Greedy obtiene un coloreo optimo. Si ya contamos con un coloreo optimo, basta con ordenar primero a los vertices de color $1$, luego a los de color $2$, etc, hasta llegar a los de color $\chi (G)$.
+}
+
+\section{Generalizacion de la definicion de coloreo}
+
+\defn{$k-coloreo$ generalizado}{
+  Un $k-coloreo$ de un grafo $G$ es una funcion 
+  \[f: V(G) \mapsto A\]
+  donde $|A| = k$, tal que
+  \[f(u) = f(v) \Longrightarrow uv \notin E(G)\]
+}
+
+\thm{
+  Nordhaus-Gaddum
+}{
+  Si $G$ es un grafo de orden $n$ entonces tenemos dos cotas,
+  \[2 \sqrt{n} \leq \chi(G) + \chi(\overline{G}) \leq n + 1  \]
+  \[n \leq \chi(G) \chi\overline{(G)} \leq {\left( \frac{n + 1}{2} \right)}^2   \]
+}
+
+\pf{
+  Veamos la segunda cota inferior. Sean $\chi (G) = k$, $\chi (\overline{G}) = c$, y $g$ un $c-coloreo$ de $G$ y $\overline{g}$ un $k-coloreo$ de $\overline{G}$. 
+  Entonces, la asignacion $v \longrightarrow (g(v), \overline(g)(v))$ determina un coloreo de $K_n$, pues si $u, v \in V(G)$,
+  \[ (g(u), \overline{g}(u)) \neq (g(v), \overline{g}(v))   \]
+  ya que si son adyacentes en $G$, difieren sus imagenes por $g$, y si no son adyacentes en $G$ entonces lo son en $\overline{G}$ luego difieren sus imagenes por $\overline{g}$.
+  Por lo tanto,
+  \[n = \chi(K_n ) \leq k . c = \chi(G) \chi(\overline{G})\]
+
+  Ahora veamos la primer cota inferior. Tenemos que la media geometrica de dos reales positivos es a lo sumo su media aritmetica,
+  \[\sqrt{n} \leq \sqrt{\chi(G) \chi(\overline(G))} \leq \frac{\chi(G) + \chi(\overline(G))}{2}\]
+}
+
+\pf{
+  Para las cotas superiores usar induccion o a partir de la cota
+  \[\chi(G) \leq \max \{\delta(G'): G' \subseteq G \} \]
+}
+
+\thm{}{
+  Sea $n$ un entero positivo. Para todo par de numeros enteros $a, b$ tales que 
+  \[2 \sqrt{n} \leq a + b \leq n + 1\]
+  \[n \leq a . b \leq {\left( \frac{n + 1}{2} \right)}^2\]
+
+  existe un grafo $G$ de orden $n$ tal que
+  \[\chi(G) = a\]
+  \[\chi(\overline G) = b\]
+}
+
+\rmkb{
+  Sabemos que $\chi(G) \leq \Delta(G) + 1$. Ademas, para todo $k \geq 1$,
+  \begin{itemize}
+    \item $\chi(C_{2k + 1}) = 3 = \Delta (C_{2k + 1}) + 1$
+    \item $\chi (K_k ) = k = \Delta(K_k ) + 1$
+  \end{itemize}
+}
+
+\thm{Teorema de Brooks}{
+  Si $G$ es un grafo conexo que no es un ciclo impar o un grafo completo, entonces vale la cota
+  \[\chi(G) \leq \Delta (G)\]
+}
+
+\pf{
+  No la hacemos.
+}
+
+\rmkb{
+  \begin{itemize}
+    \item Sabemos que si $G$ es $k-critico$, entonces $\delta(G) \geq k - 1$
+    \item Los unicos grafos $k-criticos$ y $(k - 1) - regulares$ son los ciclos impares y los grafos completos.
+    \item Otra manera de enunciar el Teorema de Brooks es que, si $\Delta (G) \geq 3$, entonces $\chi(G) \leq \max\{\omega(G), \Delta(G)\}$.
+  \end{itemize}
+}
+
+\clm{Conjetura de Borodin y Kostochka}{
+  Si $\Delta(G) \geq 9$ entonces $\chi(G) \leq \max\{\omega(G), \Delta(G) - 1\}$
+}
+
+\rmkb{
+  Pedimos grado mayor a 9 porque el $M_8$ no verifica la cota.
+}
+
+\prop{
+  Otras cotas de $\chi(G)$ son:
+  \begin{itemize}
+    \item $\omega(G) \leq \chi(G) \leq n$
+    \item $\chi(G) \leq \frac{\omega(G) + n}{2}$
+    \item $\omega(G) \leq \chi(G) \leq n + 1 - \alpha(G)$
+    \item $\chi(G) \leq \frac{\omega(G) + n + 1 - \alpha(G)}{2}$
+    \item $\omega(G) \leq \chi(G) \leq 1 + \Delta(G)$
+    \item \textbf{Conjetura.} $\chi(G) \leq \frac{\omega(G) + 1 + \delta(G)}{2}$
+  \end{itemize} 
+}
+
+Sabemos que $\omega(G) \leq \chi(G)$, es decir, $\chi(G) - \omega(G) \geq 0 $. Cuanto mas grande que $\omega(G)$ puede ser que $\chi(G)$? Esa diferencia no esta acotada, podemos construir grafos para que la diferencia sea tan grande como queramos.
+
+\ex{
+  \[\chi(K_n ) - \omega(K_n ) = n - n = 0  \]
+  \[\chi(C_{2k + 1}) - \omega(C_{2k + 1}) = 3 - 2 = 1  \]
+  \[\chi(M_8 ) - \omega(M_8 ) = 8 - 6 = 2  \]
+}
+
+\thm{Teorema de Jan Mycielski}{
+  Para todo $k \in \mathbb{N}$ existe un grafo $G_k$ tal que $\chi(G_k ) - \omega(G_k ) = k$.
+}
+
+Veamos como podemos construir esos grafos.
+Sea $G$ un grafo con $\omega(G) \leq 2$ (libre de triangulos), $V(G) = \{v_1 , v_2 , \dots, v_n\}$. Consideremos el siguiente grafo $G_M$:
+
+\[V(G_M )= \{v_1 , v_2 , \dots , v_n \}\ \cup \{u_1 , u_2 , \dots , u_n\} \cup \{w\}\]
+
+\[E(G_M ) = E(G) \cup \{u_i v_j : v_i v_j \in E(G), i, j \in [n]\} \cup \{u_i w: i \in [n]\}      \]
+
+Es decir, hacemos una copia de cada uno de los vertices originales y lo conectamos con los vertices que esta conectado el vertice original. Luego, agregamos un vertice $w$ y lo hacemos adyacente a todos los vertices nuevos.
+Es importante notar que los vertices originales no son adyacentes a sus copias.
+
+Ademas, el numero de clique de cada grafo nuevo siempre se mantiene constante. Supongamos que aumentara de 2 a 3, luego en el nuevo grafo existira un triangulo. Sea $u_h$ una copia que forma parte de ese triangulo. Entonces, debera ser incidente a dos vertices $v_i$ y $v_j$. Notemos entonces que $u_h$ no puede ser copia de ninguno de ellos pues no serian adyacentes, luego $u_h$ es una copia de algun $v_h$. Pero si $u_h$ es adyacente a $v_i$ y $v_j$, entonces es porque $v_h$ tambien es adyacente a ambos, luego $v_i , v_j, v_h$ forman un triangulo en el grafo original, absurdo.
+
+(Queda por ver que el numero cromatico no disminuye, que el numero cromatico aumenta en a lo sumo 1, y finalmente que aumenta en exactamente 1 por cada repeticion de la construccion)
+
+Supongamos por el absurdo que existe $f$ un $\chi(G) - coloreo$ para $G_M$. Sin perdida de generalidad, podemos asignarle a $w$ el color $\chi(G)$. Luego, todos los vertices $u$ deberan tener un color distinto a $\chi(G)$.
+
+(\textbf{REVISAR})
+
+\prop{
+  \[\chi(G_M ) = \chi(G) + 1\]
+  \[\omega(G_M ) = 2\]
+}
+
+\section{Grafos perfectos}
+
+\defn{Grafo perfecto}{
+  Un grafo $G$ se dice perfecto si para todo subgrafo inducido $G'$ de $G$ (incluso $G$) se verifica que $\chi(G') = \omega(G')$
+}.
+
+\ex{
+
+  $P_n$, $K_n$, $C_{2k}$ y los grafos bipartitos son grafos perfectos (luego los arboles son perfectos).
+
+  Los ciclos impares $C_{2k+1}$ no son grafos perfectos para $k \geq 2$
+}
+
+\thm{Prueba de la Conjetura de Berge}{
+  Un grafo es perfecto si y solo si su complemento es perfecto.
+}
+
+\thm{Prueba de la conjetura \textbf{fuerte} de los grafos perfecto}
+{
+  \[G \; perfecto \iff \forall k \in \mathbb{N}, k \geq 2 \; \; C_{2k + 1} \nsubseteq G \land \overline{C_{2k + 1}} \nsubseteq G \]
+  Un grafo es perfecto si y solo si no tiene como subgrafo inducido a un ciclo impar de longitud mayor o igual a 5 ni su complemento (es decir, $C_{2k + 1}$ y $\overline{C_{2k + 1}}$ no son subgrafos inducidos de $G$ para todo $k \geq 2$).
+}
+
+\end{document}

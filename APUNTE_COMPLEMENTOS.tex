@@ -1,0 +1,98 @@
+\documentclass[12pt,oneside]{book}
+
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{thmtools}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[utf8]{inputenc}
+%\usepackage[english]{babel}
+\usepackage{framed}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{environ}
+\usepackage{tcolorbox}
+\usepackage{verbatim}
+\usepackage{subfiles}
+
+
+\usepackage[spanish]{babel}
+\usepackage[useregional]{datetime2}
+
+\tcbuselibrary{theorems,skins,breakable}
+
+\setstretch{1.2}
+\geometry{
+    textheight=9in,
+    textwidth=6.5in,
+    top=1in,
+    headheight=12pt,
+    headsep=25pt,
+    footskip= 30pt
+}
+
+% pre cambios
+%\geometry{
+    %textheight=9in,
+    %textwidth=5.5in,
+    %top=1in,
+    %headheight=12pt,
+    %headsep=25pt,
+    %footskip=30pt
+%}
+
+% Variables
+\def\notetitle{COMPLEMENTOS DE MATEMATICA I
+
+(BORRADOR)}
+
+\def\noteauthor{
+    \textbf{Octavio Rassi}
+}
+
+
+% The theorem system and user-defined commands
+\input{build/theorems.tex}
+\input{build/commands.tex}
+
+% ------------------------------------------------------------------------------
+
+\begin{document}
+\selectlanguage{spanish}
+\setlocalecaption{spanish}{chapter}{Unidad}
+\setlocalecaption{spanish}{appendix}{Apendice}
+\setlocalecaption{spanish}{contents}{Contenidos}
+% chktex-file 10
+% chktex-file 9
+% chktex-file 1
+% chktex-file 36
+
+
+
+\title{\textbf{
+    \LARGE{\notetitle} \vspace*{10\baselineskip}}
+    }
+% \author{\noteauthor}
+\date{\DTMdisplaydate{\year}{\month}{\day}{-1}}
+
+
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+
+
+\subfile{capitulo1}
+\subfile{capitulo2}
+\subfile{capitulo3}
+\subfile{capitulo4}
+\subfile{capitulo5}
+\subfile{capitulo6}
+\subfile{capitulo7}
+\subfile{anexo_practicas}
+
+
+\end{document}
